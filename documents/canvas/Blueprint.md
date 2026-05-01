@@ -11,7 +11,7 @@
 | Phase | Tasks | Done | Left | Started | Completed |
 |---|---|---|---|---|---|
 | Phase 1 — Foundation | 12 | 12 | 0 | 2026-04-30 | 2026-04-30 |
-| Phase 2 — Platform Libraries | 18 | 12 | 6 | 2026-05-01 | — |
+| Phase 2 — Platform Libraries | 18 | 17 | 1 | 2026-05-01 | — |
 | Phase 3 — Shell Libraries | 16 | 0 | 16 | — | — |
 | Phase 4 — MFE Libraries | 12 | 0 | 12 | — | — |
 | Phase 5 — Component Libraries | 20 | 0 | 20 | — | — |
@@ -68,11 +68,11 @@
 - [x] Unit tests — 90%+ coverage ✅ (100%, 41 tests)
 
 ### `@pervaxis/canvas-platform-state`
-- [ ] NgRx Signals store base configuration
-- [ ] Redux DevTools integration (development only)
-- [ ] Shared state slice interface for cross-MFE state
-- [ ] InjectionToken for shared store access
-- [ ] Unit tests — 90%+ coverage
+- [x] NgRx Signals store base configuration ✅
+- [x] Redux DevTools integration (development only) ✅ (`withCanvasDevTools` store feature)
+- [x] Shared state slice interface for cross-MFE state ✅ (`SharedState` interface + `SharedStateService`)
+- [x] InjectionToken for shared store access ✅ (`CANVAS_SHARED_STATE` via `provideCanvasState()`)
+- [x] Unit tests — 90%+ coverage ✅ (100%, 18 tests)
 
 ### `@pervaxis/canvas-platform-error`
 - [ ] Global error handler (`ErrorHandler` implementation)
