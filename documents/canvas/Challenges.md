@@ -116,3 +116,39 @@ SonarCloud's quality gate evaluation requires a baseline analysis. On a project 
 
 **Resolution:**
 Set `qualitygate.wait=false` in `pr-check.yml` for the first merge to bootstrap the SonarCloud project with an initial analysis. After that first merge, flip back to `qualitygate.wait=true` so subsequent PRs are properly gated. See `.claude/guides/ci-sonarcloud-setup.md` for step-by-step instructions.
+
+---
+
+## C006 — ng-packagr `TS6059: File is not under rootDir` when importing from a sibling workspace lib
+
+**Date:** 2026-05-01
+**Phase:** Phase 2 — `canvas-platform-auth`
+**Library:** `canvas-platform-auth` build
+**Symptom:** `npx nx build canvas-platform-auth` failed with:
+```
+TS6059: File '...libs/mfe/contracts/src/lib/interfaces/auth-context.interface.ts'
+is not under 'rootDir' '...libs/platform/auth/src'.
+```
+
+**Root Cause:**
+ng-packagr's production build (`compilationMode: partial`) enforces that all compiled files must be inside `rootDir` (the library's own `src/` folder). The tsconfig path alias `@pervaxis/canvas-mfe-contracts` resolved to `libs/mfe/contracts/src/` via `tsconfig.base.json`, pulling files from outside `rootDir` into the compilation.
+
+**Resolution:**
+Added a `paths` override in `libs/platform/auth/tsconfig.lib.prod.json` that remaps `@pervaxis/canvas-mfe-contracts` to the **pre-built dist output** (`dist/libs/mfe/contracts`) instead of the source tree. TypeScript resolves the dist via its `package.json` typings field, which stays outside the auth lib's `rootDir`.
+
+**Pattern to apply to every new publishable lib that imports a sibling Canvas lib:**
+```json
+// tsconfig.lib.prod.json
+{
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "declarationMap": false,
+    "paths": {
+      "@pervaxis/canvas-mfe-contracts": ["dist/libs/mfe/contracts"]
+    }
+  },
+  "angularCompilerOptions": { "compilationMode": "partial" }
+}
+```
+
+**See also:** L006 in `LessonsLearnt.md`

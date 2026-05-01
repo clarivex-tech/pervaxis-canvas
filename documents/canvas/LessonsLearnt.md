@@ -115,3 +115,31 @@ ignoredFiles: [
 ```
 
 **Applies to:** Every publishable library generated in this workspace.
+
+---
+
+## L006 — Inter-workspace lib builds require `dist` path override in `tsconfig.lib.prod.json`
+
+**Date:** 2026-05-01
+**Phase:** Phase 2 — `canvas-platform-auth`
+**Rule:** When a publishable library imports from another publishable library in the same workspace, override `paths` in `tsconfig.lib.prod.json` to point at the **built dist output**, not the source. The production build uses `compilationMode: partial` which enforces `rootDir` strictly.
+
+**Why:**
+ng-packagr sets `rootDir` to the library's own `src/` directory. Resolving a workspace sibling via a tsconfig path alias that points to `libs/other-lib/src/` brings files from outside `rootDir` into the compilation, causing `TS6059: File is not under rootDir`.
+
+**What to add to `tsconfig.lib.prod.json`:**
+```json
+{
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "declarationMap": false,
+    "paths": {
+      "@pervaxis/canvas-mfe-contracts": ["dist/libs/mfe/contracts"]
+    }
+  },
+  "angularCompilerOptions": { "compilationMode": "partial" }
+}
+```
+The dist path is relative to `baseUrl` (workspace root). Always build the dependency first so the dist exists.
+
+**Applies to:** Any publishable Canvas library that imports from `@pervaxis/canvas-mfe-contracts` or any other sibling Canvas lib.

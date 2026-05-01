@@ -24,7 +24,9 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@pervaxis/canvas-platform-http": ["./libs/platform/http/src/index.ts"]
+      "@pervaxis/canvas-platform-http": ["./libs/platform/http/src/index.ts"],
+      "@pervaxis/canvas-mfe-contracts": ["./libs/mfe/contracts/src/index.ts"],
+      "@pervaxis/canvas-platform-auth": ["./libs/platform/auth/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist"]

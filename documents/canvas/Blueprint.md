@@ -11,7 +11,7 @@
 | Phase | Tasks | Done | Left | Started | Completed |
 |---|---|---|---|---|---|
 | Phase 1 — Foundation | 12 | 12 | 0 | 2026-04-30 | 2026-04-30 |
-| Phase 2 — Platform Libraries | 18 | 6 | 12 | 2026-05-01 | — |
+| Phase 2 — Platform Libraries | 18 | 12 | 6 | 2026-05-01 | — |
 | Phase 3 — Shell Libraries | 16 | 0 | 16 | — | — |
 | Phase 4 — MFE Libraries | 12 | 0 | 12 | — | — |
 | Phase 5 — Component Libraries | 20 | 0 | 20 | — | — |
@@ -60,12 +60,12 @@
 - [x] Unit tests — 90%+ coverage ✅ (94.73%, 37 tests)
 
 ### `@pervaxis/canvas-platform-auth`
-- [ ] `AuthContextService` — exposes current user, roles, permissions as signals
-- [ ] `hasPermission` structural directive
-- [ ] `hasRole` structural directive
-- [ ] `AuthGuard` — route guard for authenticated routes
-- [ ] `PermissionGuard` — route guard for permission-gated routes
-- [ ] Unit tests — 90%+ coverage
+- [x] `AuthContextService` — exposes current user, roles, permissions as signals ✅
+- [x] `hasPermission` structural directive ✅
+- [x] `hasRole` structural directive ✅
+- [x] `AuthGuard` — route guard for authenticated routes ✅
+- [x] `PermissionGuard` — route guard for permission-gated routes ✅
+- [x] Unit tests — 90%+ coverage ✅ (100%, 41 tests)
 
 ### `@pervaxis/canvas-platform-state`
 - [ ] NgRx Signals store base configuration
