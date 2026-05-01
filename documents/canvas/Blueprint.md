@@ -11,7 +11,7 @@
 | Phase | Tasks | Done | Left | Started | Completed |
 |---|---|---|---|---|---|
 | Phase 1 — Foundation | 12 | 12 | 0 | 2026-04-30 | 2026-04-30 |
-| Phase 2 — Platform Libraries | 26 | 21 | 5 | 2026-05-01 | — |
+| Phase 2 — Platform Libraries | 26 | 26 | 0 | 2026-05-01 | 2026-05-01 |
 | Phase 3 — Shell Libraries | 16 | 0 | 16 | — | — |
 | Phase 4 — MFE Libraries | 12 | 0 | 12 | — | — |
 | Phase 5 — Component Libraries | 20 | 0 | 20 | — | — |
@@ -20,7 +20,7 @@
 | Phase 8 — Reference Apps | 10 | 0 | 10 | — | — |
 | Phase 9 — Forge Integration | 14 | 0 | 14 | — | — |
 | Phase 10 — CI/CD and Publishing | 10 | 0 | 10 | — | — |
-| **Total** | **134** | **33** | **101** | | |
+| **Total** | **134** | **38** | **96** | | |
 
 ---
 
@@ -47,7 +47,7 @@
 
 ## Phase 2 — Platform Libraries
 
-**Started:** 2026-05-01 &nbsp;&nbsp; **Completed:** —
+**Started:** 2026-05-01 &nbsp;&nbsp; **Completed:** 2026-05-01 ✅
 
 > Goal: Core platform services that work on both web and mobile surfaces.
 
@@ -81,11 +81,11 @@
 - [x] Unit tests — 90%+ coverage ✅ (100%, 24 tests)
 
 ### `@pervaxis/canvas-platform-i18n`
-- [ ] Transloco configuration factory
-- [ ] Lazy translation file loader (per-feature JSON files)
-- [ ] Locale switching service
-- [ ] Fallback locale handling
-- [ ] Unit tests — 90%+ coverage
+- [x] Transloco configuration factory (`provideCanvasI18n()`) ✅
+- [x] Lazy translation file loader (`CanvasTranslocoLoader`) ✅
+- [x] Locale switching service (`LocaleService`) ✅
+- [x] Fallback locale handling (configured via `CanvasI18nConfig.fallbackLang`) ✅
+- [x] Unit tests — 90%+ coverage ✅ (100%, 14 tests)
 
 ---
 

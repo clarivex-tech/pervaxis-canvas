@@ -28,7 +28,8 @@
       "@pervaxis/canvas-mfe-contracts": ["./libs/mfe/contracts/src/index.ts"],
       "@pervaxis/canvas-platform-auth": ["./libs/platform/auth/src/index.ts"],
       "@pervaxis/canvas-platform-state": ["./libs/platform/state/src/index.ts"],
-      "@pervaxis/canvas-platform-error": ["./libs/platform/error/src/index.ts"]
+      "@pervaxis/canvas-platform-error": ["./libs/platform/error/src/index.ts"],
+      "@pervaxis/canvas-platform-i18n": ["./libs/platform/i18n/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist"]
