@@ -7,6 +7,9 @@ export default [
   {
     ignores: [
       '**/dist',
+      '**/node_modules',
+      '**/.nx',
+      '**/coverage',
       '**/vite.config.*.timestamp*',
       '**/vitest.config.*.timestamp*',
     ],
@@ -21,20 +24,24 @@ export default [
           allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$'],
           depConstraints: [
             {
-              sourceTag: 'scope:shared',
-              onlyDependOnLibsWithTags: ['scope:shared'],
+              sourceTag: 'scope:contracts',
+              onlyDependOnLibsWithTags: [],
             },
             {
-              sourceTag: 'scope:shop',
-              onlyDependOnLibsWithTags: ['scope:shop', 'scope:shared'],
+              sourceTag: 'scope:platform',
+              onlyDependOnLibsWithTags: ['scope:contracts'],
             },
             {
-              sourceTag: 'scope:api',
-              onlyDependOnLibsWithTags: ['scope:api', 'scope:shared'],
+              sourceTag: 'scope:shell',
+              onlyDependOnLibsWithTags: ['scope:contracts', 'scope:platform'],
             },
             {
-              sourceTag: 'type:data',
-              onlyDependOnLibsWithTags: ['type:data'],
+              sourceTag: 'scope:mfe',
+              onlyDependOnLibsWithTags: ['scope:contracts', 'scope:platform'],
+            },
+            {
+              sourceTag: 'scope:components',
+              onlyDependOnLibsWithTags: ['scope:contracts'],
             },
           ],
         },
@@ -42,17 +49,12 @@ export default [
     },
   },
   {
-    files: [
-      '**/*.ts',
-      '**/*.tsx',
-      '**/*.cts',
-      '**/*.mts',
-      '**/*.js',
-      '**/*.jsx',
-      '**/*.cjs',
-      '**/*.mjs',
-    ],
-    // Override or add rules here
-    rules: {},
+    files: ['**/*.ts', '**/*.tsx', '**/*.cts', '**/*.mts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+    },
   },
 ];

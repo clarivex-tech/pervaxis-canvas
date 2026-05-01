@@ -4,26 +4,26 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "target": "ES2022",
+    "module": "ES2022",
+    "useDefineForClassFields": false,
+    "lib": ["ES2022", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {
-      "@org/api/products": ["libs/api/products/src/index.ts"],
-      "@org/models": ["libs/shared/models/src/index.ts"],
-      "@org/shop/data": ["libs/shop/data/src/index.ts"],
-      "@org/shop/feature-product-detail": [
-        "libs/shop/feature-product-detail/src/index.ts"
-      ],
-      "@org/shop/feature-products": ["libs/shop/feature-products/src/index.ts"],
-      "@org/shop/shared-ui": ["libs/shop/shared-ui/src/index.ts"]
-    }
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {}
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp", "dist"]
 }

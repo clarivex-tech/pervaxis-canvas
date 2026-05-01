@@ -1,10 +1,7 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/.eslintrc.json",
@@ -12,7 +9,6 @@
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/src/test-setup.[jt]s",
-      "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/test-setup.[jt]s"
     ],
     "sharedGlobals": []
@@ -20,69 +16,40 @@
   "targetDefaults": {
     "@angular/build:application": {
       "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     },
     "@nx/eslint:lint": {
       "cache": true,
       "inputs": [
         "default",
         "^default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/tools/eslint-rules/**/*"
-      ]
-    },
-    "@nx/esbuild:esbuild": {
-      "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
+        "{workspaceRoot}/eslint.config.mjs"
       ]
     },
     "@nx/js:tsc": {
       "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     },
     "@nx/vitest:test": {
       "cache": true,
-      "inputs": [
-        "default",
-        "^production"
-      ]
+      "inputs": ["default", "^production"]
     }
   },
   "release": {
-    "projects": [
-      "api"
-    ],
+    "projects": ["libs/**"],
     "projectsRelationship": "independent",
-    "docker": {
-      "skipVersionActions": true
+    "version": {
+      "conventionalCommits": true
+    },
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": "github"
+      }
     }
   },
   "plugins": [
-    {
-      "plugin": "@nx/playwright/plugin",
-      "options": {
-        "targetName": "e2e"
-      }
-    },
     {
       "plugin": "@nx/eslint/plugin",
       "options": {
@@ -90,47 +57,39 @@
       }
     },
     {
-      "plugin": "@nx/docker",
-      "options": {
-        "buildTarget": "docker:build",
-        "runTarget": "docker:run"
-      }
-    },
-    {
       "plugin": "@nx/vite/plugin",
       "options": {
         "buildTargetName": "build",
         "serveTargetName": "serve",
-        "devTargetName": "dev",
-        "previewTargetName": "preview",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "typecheck",
-        "buildDepsTargetName": "build-deps",
-        "watchDepsTargetName": "watch-deps"
+        "testTargetName": "test",
+        "previewTargetName": "preview"
       }
     },
     {
       "plugin": "@nx/vitest",
       "options": {
-        "testTargetName": "vite:test"
+        "testTargetName": "test"
       }
     }
   ],
   "generators": {
     "@nx/angular:application": {
-      "e2eTestRunner": "playwright",
       "linter": "eslint",
-      "style": "css",
-      "unitTestRunner": "vitest-analog"
+      "style": "scss",
+      "unitTestRunner": "vitest-analog",
+      "standalone": true,
+      "routing": true
     },
     "@nx/angular:library": {
       "linter": "eslint",
-      "unitTestRunner": "vitest-analog"
+      "unitTestRunner": "vitest-analog",
+      "standalone": true
     },
     "@nx/angular:component": {
-      "style": "css"
+      "style": "scss",
+      "standalone": true,
+      "changeDetection": "OnPush"
     }
   },
-  "analytics": false,
-  "nxCloudId": "69f3f5239b6348a9a5acaaa8"
+  "analytics": false
 }

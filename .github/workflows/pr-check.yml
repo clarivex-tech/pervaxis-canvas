@@ -1,0 +1,54 @@
+name: PR Check
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  lint-test-build:
+    name: Lint · Test · Build · SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npx nx run-many --target=lint --all
+
+      - name: Test with coverage
+        run: npx nx run-many --target=test --all --coverage --passWithNoTests
+
+      - name: Build
+        run: npx nx run-many --target=build --all
+
+      - name: SonarCloud Scan
+        if: github.base_ref == 'main'
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.qualitygate.wait=false
+            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+            -Dsonar.pullrequest.branch=${{ github.head_ref }}
+            -Dsonar.pullrequest.base=${{ github.base_ref }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pr-coverage-${{ github.run_id }}
+          path: coverage/
+          retention-days: 7

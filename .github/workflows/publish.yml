@@ -1,0 +1,49 @@
+name: Publish
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  publish:
+    name: Build · Publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@pervaxis'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all libs
+        run: npx nx run-many --target=build --all
+
+      - name: Publish packages to GitHub Packages
+        run: |
+          for dir in dist/libs/*/; do
+            if [ -f "$dir/package.json" ]; then
+              cd "$dir"
+              npm publish --access public
+              cd -
+            fi
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
