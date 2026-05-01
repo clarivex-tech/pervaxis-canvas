@@ -11,7 +11,7 @@
 | Phase | Tasks | Done | Left | Started | Completed |
 |---|---|---|---|---|---|
 | Phase 1 — Foundation | 12 | 12 | 0 | 2026-04-30 | 2026-04-30 |
-| Phase 2 — Platform Libraries | 18 | 17 | 1 | 2026-05-01 | — |
+| Phase 2 — Platform Libraries | 26 | 21 | 5 | 2026-05-01 | — |
 | Phase 3 — Shell Libraries | 16 | 0 | 16 | — | — |
 | Phase 4 — MFE Libraries | 12 | 0 | 12 | — | — |
 | Phase 5 — Component Libraries | 20 | 0 | 20 | — | — |
@@ -20,7 +20,7 @@
 | Phase 8 — Reference Apps | 10 | 0 | 10 | — | — |
 | Phase 9 — Forge Integration | 14 | 0 | 14 | — | — |
 | Phase 10 — CI/CD and Publishing | 10 | 0 | 10 | — | — |
-| **Total** | **134** | **18** | **116** | | |
+| **Total** | **134** | **33** | **101** | | |
 
 ---
 
@@ -75,10 +75,10 @@
 - [x] Unit tests — 90%+ coverage ✅ (100%, 18 tests)
 
 ### `@pervaxis/canvas-platform-error`
-- [ ] Global error handler (`ErrorHandler` implementation)
-- [ ] Structured error logging to console + optional remote endpoint
-- [ ] `ErrorBoundaryComponent` — wraps content, catches render errors gracefully
-- [ ] Unit tests — 90%+ coverage
+- [x] Global error handler (`ErrorHandler` implementation) ✅
+- [x] Structured error logging to console + optional remote endpoint ✅
+- [x] `ErrorBoundaryComponent` — wraps content, catches render errors gracefully ✅
+- [x] Unit tests — 90%+ coverage ✅ (100%, 24 tests)
 
 ### `@pervaxis/canvas-platform-i18n`
 - [ ] Transloco configuration factory
