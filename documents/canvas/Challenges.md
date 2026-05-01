@@ -152,3 +152,91 @@ Added a `paths` override in `libs/platform/auth/tsconfig.lib.prod.json` that rem
 ```
 
 **See also:** L006 in `LessonsLearnt.md`
+
+---
+
+## C007 — `Cannot find module '@ngrx/signals/devtools'` in v21
+
+**Date:** 2026-05-01
+**Phase:** Phase 2 — `canvas-platform-state`
+**Library:** `canvas-platform-state`
+**Symptom:** Importing `withDevtools` from `@ngrx/signals/devtools` caused:
+```
+Cannot find module '@ngrx/signals/devtools' or its corresponding type declarations.
+```
+
+**Root Cause:**
+`@ngrx/signals` v21.1.0 does not ship a `devtools` sub-entry-point. The package was released before that integration was stabilised, so `withDevtools` simply does not exist in this version.
+
+**Resolution:**
+Implemented `withCanvasDevTools(name)` as a custom `signalStoreFeature` that bridges to the Redux DevTools Extension global (`__REDUX_DEVTOOLS_EXTENSION__`) using `withHooks.onInit`, `getState`, and `watchState` — all of which are available in v21.
+
+**File:** `libs/platform/state/src/lib/devtools/devtools.ts`
+**See also:** L007 in `LessonsLearnt.md`
+
+---
+
+## C008 — `@nx/dependency-checks` flags all peerDependencies as "not used" when a workspace lib is imported
+
+**Date:** 2026-05-01
+**Phase:** Phase 2 — `canvas-platform-auth`, `canvas-platform-state`
+**Libraries:** `canvas-platform-auth`, `canvas-platform-state`
+**Symptom:** `nx lint canvas-platform-auth` reported every peerDependency as missing or unused:
+```
+The "canvas-platform-auth" project uses the following packages, but they are missing from "peerDependencies":
+  - @angular/core
+  - @angular/router
+  - @pervaxis/canvas-mfe-contracts
+```
+...despite all three being correctly listed in `package.json`.
+
+**Root Cause:**
+The `@nx/dependency-checks` scanner follows tsconfig path aliases to resolve imports. When it hits `@pervaxis/canvas-mfe-contracts → libs/mfe/contracts/src/index.ts`, it enters a workspace-local resolution path and short-circuits — abandoning the scan for all further imports in that file and its descendants. This causes the scanner to not register `@angular/core`, `@angular/router`, or `@pervaxis/canvas-mfe-contracts` as "used", even though they clearly are.
+
+**Resolution:**
+Added all affected packages to `ignoredDependencies` in the library's `eslint.config.mjs`. This suppresses the false-positive without removing the actual peerDependency entries from `package.json`.
+
+**See also:** L009 in `LessonsLearnt.md`
+
+---
+
+## C009 — `@angular-eslint/directive-selector` rejects public-API selector names
+
+**Date:** 2026-05-01
+**Phase:** Phase 2 — `canvas-platform-auth`
+**Library:** `canvas-platform-auth`
+**Symptom:** Lint failed on `HasPermissionDirective` and `HasRoleDirective`:
+```
+The selector of the directive "HasPermissionDirective" should be prefixed with "lib" (https://angular.io/guide/styleguide#style-02-08)
+```
+
+**Root Cause:**
+The Nx generator sets `prefix: 'lib'` for all directive selectors. The auth library's public-API directives are named `*hasPermission` and `*hasRole` — the intended consumer-facing selectors start with `has`, not `lib`.
+
+**Resolution:**
+Changed the `@angular-eslint/directive-selector` prefix in `libs/platform/auth/eslint.config.mjs` from `'lib'` to `['has']`. This scopes the change to the auth library only, so other libraries retain their `lib` prefix.
+
+**See also:** L008 in `LessonsLearnt.md`
+
+---
+
+## C010 — New library's inferred `test` target not found until Nx cache is cleared
+
+**Date:** 2026-05-01
+**Phase:** Phase 2 — `canvas-platform-error`
+**Library:** `canvas-platform-error`
+**Symptom:** Immediately after generating the library and running `nx test canvas-platform-error`:
+```
+NX  Cannot find configuration for task canvas-platform-error:test
+```
+
+**Root Cause:**
+The `test` target for Angular libraries with a `vite.config.mts` is **inferred** by the `@nx/vite/plugin` (not declared in `project.json`). The Nx project graph is cached on disk from before the new library existed. The fresh `vite.config.mts` is not scanned until the cache is invalidated, so the inferred `test` target is absent.
+
+**Resolution:**
+```bash
+npx nx reset
+```
+After the reset, `nx show project canvas-platform-error` correctly listed the inferred `test` target and `nx test canvas-platform-error --coverage` ran normally.
+
+**See also:** L010 in `LessonsLearnt.md`
