@@ -1,0 +1,9 @@
+{
+  "name": "@pervaxis/canvas-mfe-contracts",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": "^21.2.0",
+    "rxjs": ">=7.8.0"
+  },
+  "sideEffects": false
+}
