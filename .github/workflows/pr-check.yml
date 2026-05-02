@@ -35,7 +35,7 @@ jobs:
 
       - name: SonarCloud Scan
         if: github.base_ref == 'main'
-        uses: SonarSource/sonarqube-scan-action@v5
+        uses: SonarSource/sonarqube-scan-action@v6
         with:
           args: >
             -Dsonar.qualitygate.wait=false

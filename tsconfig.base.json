@@ -23,7 +23,9 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": {}
+    "paths": {
+      "@pervaxis/canvas-platform-http": ["./libs/platform/http/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp", "dist"]
 }
