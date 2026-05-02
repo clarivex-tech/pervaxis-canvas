@@ -33,7 +33,7 @@ export default [
             },
             {
               sourceTag: 'scope:shell',
-              onlyDependOnLibsWithTags: ['scope:contracts', 'scope:platform'],
+              onlyDependOnLibsWithTags: ['scope:contracts', 'scope:platform', 'scope:shell'],
             },
             {
               sourceTag: 'scope:mfe',

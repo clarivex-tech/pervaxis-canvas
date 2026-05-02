@@ -29,7 +29,11 @@
       "@pervaxis/canvas-platform-auth": ["./libs/platform/auth/src/index.ts"],
       "@pervaxis/canvas-platform-state": ["./libs/platform/state/src/index.ts"],
       "@pervaxis/canvas-platform-error": ["./libs/platform/error/src/index.ts"],
-      "@pervaxis/canvas-platform-i18n": ["./libs/platform/i18n/src/index.ts"]
+      "@pervaxis/canvas-platform-i18n": ["./libs/platform/i18n/src/index.ts"],
+      "@pervaxis/canvas-shell-core": ["./libs/shell/core/src/index.ts"],
+      "@pervaxis/canvas-shell-routing": ["./libs/shell/routing/src/index.ts"],
+      "@pervaxis/canvas-shell-auth": ["./libs/shell/auth/src/index.ts"],
+      "@pervaxis/canvas-shell-layout": ["./libs/shell/layout/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist"]
