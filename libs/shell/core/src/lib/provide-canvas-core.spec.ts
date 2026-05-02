@@ -17,7 +17,6 @@
  */
 
 import { APP_INITIALIZER } from '@angular/core';
-import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CANVAS_CONFIG_URL } from './config/canvas-runtime-config';

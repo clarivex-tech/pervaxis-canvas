@@ -99,14 +99,16 @@ describe('ShellRoutingService', () => {
       service.registerMfeRoutes();
       const ordersRoute = router.config.find((r) => r.path === 'orders');
       expect(ordersRoute?.loadComponent).toBeDefined();
-      const component = await ordersRoute!.loadComponent!();
+      const loadFn = ordersRoute?.loadComponent as () => Promise<Type<unknown>>;
+      const component = await loadFn();
       expect(component).toBe(FakeRemoteComponent);
     });
 
     it('loader receives the correct manifest', async () => {
       service.registerMfeRoutes();
       const ordersRoute = router.config.find((r) => r.path === 'orders');
-      await ordersRoute!.loadComponent!();
+      const loadFn = ordersRoute?.loadComponent as () => Promise<Type<unknown>>;
+      await loadFn();
       expect(mockLoader).toHaveBeenCalledWith(MOCK_MANIFESTS[0]);
     });
 
