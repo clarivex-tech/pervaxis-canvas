@@ -1,0 +1,10 @@
+{
+  "name": "@pervaxis/canvas-platform-auth",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": "^21.2.0",
+    "@angular/router": "^21.2.0",
+    "@pervaxis/canvas-mfe-contracts": "*"
+  },
+  "sideEffects": false
+}
