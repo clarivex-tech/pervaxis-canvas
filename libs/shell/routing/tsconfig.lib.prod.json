@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "declarationMap": false,
+    "paths": {
+      "@pervaxis/canvas-mfe-contracts": ["dist/libs/mfe/contracts"],
+      "@pervaxis/canvas-shell-core": ["dist/libs/shell/core"]
+    }
+  },
+  "angularCompilerOptions": {
+    "compilationMode": "partial"
+  }
+}
