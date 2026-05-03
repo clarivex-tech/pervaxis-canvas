@@ -20,8 +20,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  afterNextRender,
-  inject,
   signal,
   viewChild,
 } from '@angular/core';
@@ -61,14 +59,11 @@ import { ICellEditorParams } from 'ag-grid-community';
 export class TextCellEditorComponent implements ICellEditorAngularComp {
   protected readonly value = signal('');
 
-  readonly #inputRef = viewChild.required<ElementRef<HTMLInputElement>>('input');
-  readonly #el = inject(ElementRef);
+  protected readonly inputRef = viewChild.required<ElementRef<HTMLInputElement>>('input');
 
   agInit(params: ICellEditorParams): void {
     this.value.set(params.value ?? '');
-    afterNextRender(() => {
-      this.#inputRef().nativeElement.focus();
-    }, { injector: (this.#el as unknown as { injector: Parameters<typeof afterNextRender>[1]['injector'] }).injector });
+    setTimeout(() => this.inputRef().nativeElement.focus());
   }
 
   /** Returns current editor value to ag-Grid. */

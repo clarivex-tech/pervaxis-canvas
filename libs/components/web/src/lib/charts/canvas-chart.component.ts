@@ -103,9 +103,7 @@ export class CanvasChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    if (this.#chart) {
-      this.#chart.setOption(this.options(), true);
-    }
+    this.#chart?.setOption(this.options(), true);
   }
 
   ngOnDestroy(): void {

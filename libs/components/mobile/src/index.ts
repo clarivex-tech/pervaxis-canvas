@@ -19,12 +19,14 @@
 // Components
 export { MobileListComponent } from './lib/components/list/mobile-list.component';
 export { MobileFormComponent } from './lib/components/form/mobile-form.component';
-export { MobileChartComponent, MOBILE_ECHARTS_INIT, MobileEChartsInitFn } from './lib/components/chart/mobile-chart.component';
+export { MobileChartComponent, MOBILE_ECHARTS_INIT } from './lib/components/chart/mobile-chart.component';
+export type { MobileEChartsInitFn } from './lib/components/chart/mobile-chart.component';
 
 // Navigation
-export { MobileNavService, MobileTab } from './lib/navigation/mobile-nav.service';
+export { MobileNavService } from './lib/navigation/mobile-nav.service';
+export type { MobileTab } from './lib/navigation/mobile-nav.service';
 
 // Types
-export { FieldConfig, FieldOption, FieldType, FieldValidation, FormSchema, MobileFieldType } from './types/mobile-form-types';
+export type { FieldConfig, FieldOption, FieldType, FieldValidation, FormSchema, MobileFieldType } from './types/mobile-form-types';
 export { buildMobileValidators } from './utils/mobile-form-validators';
-export { EChartsInstance } from './types/echarts-types';
+export type { EChartsInstance } from './types/echarts-types';
