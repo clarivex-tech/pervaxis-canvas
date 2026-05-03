@@ -1,0 +1,10 @@
+{
+  "name": "@pervaxis/canvas-mfe-bootstrap",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": "^21.2.0",
+    "@angular/platform-browser": "^21.2.0",
+    "@pervaxis/canvas-mfe-contracts": "^0.0.1"
+  },
+  "sideEffects": false
+}
