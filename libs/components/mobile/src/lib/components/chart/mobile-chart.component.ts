@@ -92,8 +92,9 @@ export class MobileChartComponent implements OnInit, OnChanges, OnDestroy {
     container.style.setProperty('--canvas-mobile-chart-height', this.height());
     const theme = this.darkTheme() ? 'dark' : undefined;
     const instance = this.#echartsInit(container, theme);
-    this.#chart = instance instanceof Promise ? await instance : instance;
-    this.#chart.setOption(this.options());
+    const chart = instance instanceof Promise ? await instance : instance;
+    this.#chart = chart;
+    chart.setOption(this.options());
     this.#resizeObserver = new ResizeObserver(() => this.#chart?.resize());
     this.#resizeObserver.observe(this.#el.nativeElement);
   }

@@ -96,8 +96,9 @@ export class CanvasChartComponent implements OnInit, OnChanges, OnDestroy {
     const theme = this.darkTheme() ? 'dark' : undefined;
     const instance = this.#echartsInit(this.chartContainer().nativeElement, theme);
     // Resolve whether the factory returned a promise or a direct instance.
-    this.#chart = instance instanceof Promise ? await instance : instance;
-    this.#chart.setOption(this.options());
+    const chart = instance instanceof Promise ? await instance : instance;
+    this.#chart = chart;
+    chart.setOption(this.options());
     this.#resizeObserver = new ResizeObserver(() => this.#chart?.resize());
     this.#resizeObserver.observe(this.#el.nativeElement);
   }
