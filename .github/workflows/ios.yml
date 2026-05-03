@@ -43,7 +43,10 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
-          bundler-cache: true
+          bundler-cache: false
+
+      - name: Install xcpretty and CocoaPods
+        run: gem install xcpretty
 
       - name: Install CocoaPods
         working-directory: apps/canvas-mobile-ref/ios/App
@@ -52,6 +55,7 @@ jobs:
       - name: Build iOS (debug, simulator)
         working-directory: apps/canvas-mobile-ref/ios/App
         run: |
+          set -o pipefail
           xcodebuild \
             -workspace App.xcworkspace \
             -scheme App \
@@ -62,4 +66,4 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             ONLY_ACTIVE_ARCH=NO \
             build \
-            | xcpretty && exit ${PIPESTATUS[0]}
+            | xcpretty
