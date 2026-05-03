@@ -1,0 +1,32 @@
+// Copyright (C) 2026 Clarivex Technologies Private Limited — All Rights Reserved.
+
+:root {
+  // --- Mobile-specific layout ---
+  --canvas-mobile-safe-top:        env(safe-area-inset-top, 0px);
+  --canvas-mobile-safe-bottom:     env(safe-area-inset-bottom, 0px);
+  --canvas-mobile-safe-left:       env(safe-area-inset-left, 0px);
+  --canvas-mobile-safe-right:      env(safe-area-inset-right, 0px);
+
+  // --- Touch targets ---
+  --canvas-touch-target-min:       44px;
+
+  // --- Tab Bar ---
+  --canvas-tab-bar-height:         56px;
+  --canvas-tab-bar-bg:             var(--ion-tab-bar-background, #ffffff);
+  --canvas-tab-bar-border:         1px solid var(--ion-color-light-shade, #d7d8da);
+
+  // --- List ---
+  --canvas-list-item-min-height:   56px;
+  --canvas-list-divider-color:     var(--ion-color-light-shade, #d7d8da);
+
+  // --- Card (Ionic) ---
+  --canvas-mobile-card-radius:     12px;
+  --canvas-mobile-card-shadow:     0 4px 16px -4px rgb(0 0 0 / 0.12);
+
+  // --- Typography (mobile-tuned) ---
+  --canvas-mobile-font-size-sm:    13px;
+  --canvas-mobile-font-size-base:  15px;
+  --canvas-mobile-font-size-lg:    17px;
+  --canvas-mobile-font-size-xl:    20px;
+  --canvas-mobile-font-size-2xl:   24px;
+}

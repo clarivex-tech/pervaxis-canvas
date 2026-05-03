@@ -1,0 +1,91 @@
+// Copyright (C) 2026 Clarivex Technologies Private Limited — All Rights Reserved.
+
+// Responsive breakpoints
+$canvas-bp-sm:  640px;
+$canvas-bp-md:  768px;
+$canvas-bp-lg:  1024px;
+$canvas-bp-xl:  1280px;
+$canvas-bp-2xl: 1536px;
+
+@mixin canvas-sm {
+  @media (min-width: $canvas-bp-sm) { @content; }
+}
+
+@mixin canvas-md {
+  @media (min-width: $canvas-bp-md) { @content; }
+}
+
+@mixin canvas-lg {
+  @media (min-width: $canvas-bp-lg) { @content; }
+}
+
+@mixin canvas-xl {
+  @media (min-width: $canvas-bp-xl) { @content; }
+}
+
+// Elevation levels
+@mixin canvas-elevation-1 {
+  box-shadow: var(--canvas-shadow-sm);
+}
+
+@mixin canvas-elevation-2 {
+  box-shadow: var(--canvas-shadow-md);
+}
+
+@mixin canvas-elevation-3 {
+  box-shadow: var(--canvas-shadow-lg);
+}
+
+// Card surface
+@mixin canvas-card {
+  background: var(--canvas-surface-raised);
+  border: 1px solid var(--canvas-border-color);
+  border-radius: var(--canvas-radius-lg);
+  @include canvas-elevation-1;
+}
+
+// Focus ring
+@mixin canvas-focus-ring {
+  outline: 2px solid var(--canvas-color-primary);
+  outline-offset: 2px;
+}
+
+// Truncate text
+@mixin canvas-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Visually hidden (accessible)
+@mixin canvas-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// Flex center
+@mixin canvas-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flex row gap
+@mixin canvas-flex-row($gap: var(--canvas-space-4)) {
+  display: flex;
+  align-items: center;
+  gap: $gap;
+}
+
+// Badge variant helper
+@mixin canvas-badge-variant($bg, $color) {
+  background-color: $bg;
+  color: $color;
+}

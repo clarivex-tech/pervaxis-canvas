@@ -38,6 +38,37 @@
 
 ---
 
+## Phase 5 — Component Libraries ✅ Completed 2026-05-03
+
+### canvas-components-web
+- [x] Design tokens (`_canvas-tokens.scss`) + SCSS mixins (`_canvas-mixins.scss`) ✅
+- [x] `PageComponent` (title, subtitle, header-actions slot) ✅
+- [x] `SectionComponent` (card with optional title, description, actions slot) ✅
+- [x] `DataViewComponent` (loading overlay, empty state) ✅
+- [x] Form types + validators (`form-types.ts`, `form-validators.ts`) ✅
+- [x] `CanvasFormControlComponent` (single reactive control renderer) ✅
+- [x] `FormEngineComponent` (schema-driven full form with submit) ✅
+- [x] `CanvasGridComponent` (ag-Grid v33 wrapper with Canvas theme defaults) ✅
+- [x] `TextCellEditorComponent` (inline ag-Grid text editor) ✅
+- [x] `BadgeCellRendererComponent` (colour-coded badge renderer) ✅
+- [x] `CanvasChartComponent` (ECharts base with `ECHARTS_INIT` DI token + ResizeObserver) ✅
+- [x] `BarChartComponent`, `LineChartComponent`, `PieChartComponent`, `GaugeChartComponent` ✅
+- [x] `tsconfig.base.json` path alias `@pervaxis/canvas-components-web` ✅
+- [x] Tests: 50 tests, all passing ✅
+- [x] Lint: zero errors ✅
+
+### canvas-components-mobile
+- [x] Mobile design tokens (`_canvas-mobile-tokens.scss`) ✅
+- [x] `MobileListComponent` (ion-list + pull-to-refresh + infinite scroll) ✅
+- [x] `MobileFormComponent` (Ionic form with same `FormSchema` contract) ✅
+- [x] `MobileChartComponent` (ECharts mobile wrapper with `MOBILE_ECHARTS_INIT` token) ✅
+- [x] `MobileNavService` (NavController wrapper — tab nav + stack push/pop) ✅
+- [x] `tsconfig.base.json` path alias `@pervaxis/canvas-components-mobile` ✅
+- [x] Tests: 36 tests, all passing ✅
+- [x] Lint: zero errors ✅
+
+---
+
 ## Phase 4 — MFE Libraries ✅ Completed 2026-05-03
 
 ### canvas-mfe-contracts
