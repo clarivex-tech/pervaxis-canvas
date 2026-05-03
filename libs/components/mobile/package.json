@@ -1,0 +1,11 @@
+{
+  "name": "@pervaxis/canvas-components-mobile",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": "^21.2.0",
+    "@angular/forms": "^21.2.0",
+    "@ionic/angular": "^8.0.0",
+    "echarts": "^5.0.0"
+  },
+  "sideEffects": false
+}
