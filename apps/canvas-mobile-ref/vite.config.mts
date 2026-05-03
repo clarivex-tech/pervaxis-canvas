@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [angular({ tsconfig: 'apps/canvas-mobile-ref/tsconfig.spec.json' })],
   test: {
     globals: true,
+    passWithNoTests: true,
     environment: 'jsdom',
     setupFiles: ['apps/canvas-mobile-ref/src/test-setup.ts'],
     include: ['apps/canvas-mobile-ref/src/**/*.spec.ts'],

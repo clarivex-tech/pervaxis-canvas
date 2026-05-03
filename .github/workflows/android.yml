@@ -40,7 +40,7 @@ jobs:
         run: npm install -g @capacitor/cli
 
       - name: Install Capacitor Android platform
-        run: npm install @capacitor/android
+        run: npm install @capacitor/android@^6.0.0 --legacy-peer-deps
 
       - name: Capacitor sync (Android)
         working-directory: apps/canvas-mobile-ref
