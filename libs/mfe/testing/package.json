@@ -1,0 +1,10 @@
+{
+  "name": "@pervaxis/canvas-mfe-testing",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": "^21.2.0",
+    "@pervaxis/canvas-mfe-contracts": "^0.0.1",
+    "rxjs": ">=7.8.0"
+  },
+  "sideEffects": false
+}
