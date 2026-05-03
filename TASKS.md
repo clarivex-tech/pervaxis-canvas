@@ -69,6 +69,46 @@
 
 ---
 
+## Phase 6 — Mobile (Ionic) Integration ✅ Completed 2026-05-03
+
+### canvas-shell-core additions
+- [x] `MobilePlatformService` — detects iOS/Android/web via Capacitor at bootstrap ✅
+- [x] `PushNotificationService` — Capacitor Push Notifications wrapper with permission flow ✅
+- [x] `DeepLinkService` — Capacitor App `appUrlOpen` → Angular Router ✅
+- [x] Tests: 17 new tests (48 total in canvas-shell-core) ✅
+
+### canvas-platform-auth additions
+- [x] `CanvasTokenStorage` interface + `CANVAS_TOKEN_STORAGE` InjectionToken ✅
+- [x] `WebTokenStorage` (sessionStorage) + `CapacitorTokenStorage` (Keychain/EncryptedSharedPreferences) ✅
+- [x] `provideCapacitorTokenStorage()` helper ✅
+- [x] Tests: 6 new tests (47 total in canvas-platform-auth) ✅
+
+### canvas-shell-auth additions
+- [x] `CapacitorOidcService` — OIDC flow via Capacitor Browser on native, redirect on web ✅
+- [x] `CANVAS_BROWSER_OPEN` InjectionToken (swappable in tests) ✅
+- [x] Tests: 6 new tests (29 total in canvas-shell-auth) ✅
+
+### canvas-platform-http additions
+- [x] `NetworkService` — reactive `isOnline` signal (Capacitor Network on native, `navigator.onLine` on web) ✅
+- [x] `offlineInterceptor` — blocks HTTP requests with `NETWORK_OFFLINE` `CanvasHttpError` when offline ✅
+- [x] Tests: 9 new tests (46 total in canvas-platform-http) ✅
+
+### canvas-mobile-ref reference app
+- [x] `apps/canvas-mobile-ref/` — full Ionic Angular app consuming all Canvas platform libs ✅
+- [x] `AppComponent` — initialises DeepLinkService and PushNotificationService ✅
+- [x] `HomePage` — MobileChartComponent, platform/network signal display ✅
+- [x] `LoginPage` — CapacitorOidcService login flow ✅
+- [x] `capacitor.config.ts` — AppId, webDir, PushNotifications config ✅
+
+### CI pipelines
+- [x] `.github/workflows/ios.yml` — macOS, Capacitor sync, CocoaPods, xcodebuild ✅
+- [x] `.github/workflows/android.yml` — ubuntu, Capacitor sync, Gradle assembleDebug ✅
+
+### Documentation
+- [x] `documents/canvas/capacitor-compatibility.md` — plugin matrix, setup guides, offline + storage strategy ✅
+
+---
+
 ## Phase 4 — MFE Libraries ✅ Completed 2026-05-03
 
 ### canvas-mfe-contracts

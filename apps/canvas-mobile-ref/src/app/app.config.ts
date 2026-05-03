@@ -16,12 +16,19 @@
  ************************************************************************
  */
 
-export { AuthContextService } from './lib/auth-context/auth-context.service';
-export { HasPermissionDirective } from './lib/directives/has-permission.directive';
-export { HasRoleDirective } from './lib/directives/has-role.directive';
-export { authGuard } from './lib/guards/auth.guard';
-export { permissionGuard } from './lib/guards/permission.guard';
+import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideIonicAngular } from '@ionic/angular/standalone';
+import { provideCanvasHttp } from '@pervaxis/canvas-platform-http';
+import { provideCanvasCore } from '@pervaxis/canvas-shell-core';
+import { routes } from './app.routes';
 
-// Token storage
-export { CANVAS_TOKEN_STORAGE, provideCapacitorTokenStorage } from './lib/storage/token-storage.service';
-export type { CanvasTokenStorage } from './lib/storage/token-storage.service';
+/** Root application providers for canvas-mobile-ref. */
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes),
+    provideIonicAngular({ mode: 'ios' }),
+    provideCanvasCore({ configUrl: '/assets/config.json' }),
+    provideCanvasHttp({ retryAttempts: 1, timeoutMs: 15_000 }),
+  ],
+};
