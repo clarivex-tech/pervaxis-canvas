@@ -33,7 +33,9 @@
       "@pervaxis/canvas-shell-core": ["./libs/shell/core/src/index.ts"],
       "@pervaxis/canvas-shell-routing": ["./libs/shell/routing/src/index.ts"],
       "@pervaxis/canvas-shell-auth": ["./libs/shell/auth/src/index.ts"],
-      "@pervaxis/canvas-shell-layout": ["./libs/shell/layout/src/index.ts"]
+      "@pervaxis/canvas-shell-layout": ["./libs/shell/layout/src/index.ts"],
+      "@pervaxis/canvas-mfe-bootstrap": ["./libs/mfe/bootstrap/src/index.ts"],
+      "@pervaxis/canvas-mfe-testing": ["./libs/mfe/testing/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist"]
