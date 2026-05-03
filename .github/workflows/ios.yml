@@ -30,6 +30,9 @@ jobs:
       - name: Install Capacitor CLI
         run: npm install -g @capacitor/cli
 
+      - name: Install Capacitor iOS platform
+        run: npm install @capacitor/ios
+
       - name: Capacitor sync (iOS)
         working-directory: apps/canvas-mobile-ref
         run: |

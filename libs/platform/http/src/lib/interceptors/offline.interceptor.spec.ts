@@ -20,7 +20,7 @@ import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { vi, describe, it, expect } from 'vitest';
 import { offlineInterceptor } from './offline.interceptor';
 import { NetworkService } from '../services/network.service';
 import { isCanvasHttpError } from '../types/canvas-http-error';
