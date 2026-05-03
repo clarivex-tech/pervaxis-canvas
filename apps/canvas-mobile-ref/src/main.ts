@@ -16,12 +16,10 @@
  ************************************************************************
  */
 
-export { AuthContextService } from './lib/auth-context/auth-context.service';
-export { HasPermissionDirective } from './lib/directives/has-permission.directive';
-export { HasRoleDirective } from './lib/directives/has-role.directive';
-export { authGuard } from './lib/guards/auth.guard';
-export { permissionGuard } from './lib/guards/permission.guard';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { AppComponent } from './app/app.component';
 
-// Token storage
-export { CANVAS_TOKEN_STORAGE, provideCapacitorTokenStorage } from './lib/storage/token-storage.service';
-export type { CanvasTokenStorage } from './lib/storage/token-storage.service';
+bootstrapApplication(AppComponent, appConfig).catch((err) =>
+  console.error(err)
+);

@@ -1,0 +1,69 @@
+name: iOS Build
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  ios-build:
+    name: iOS Build & Test
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build canvas-mobile-ref (web assets)
+        run: npx nx build canvas-mobile-ref --configuration=production
+
+      - name: Install Capacitor CLI
+        run: npm install -g @capacitor/cli
+
+      - name: Install Capacitor iOS platform
+        run: npm install @capacitor/ios@^6.0.0 --legacy-peer-deps
+
+      - name: Capacitor sync (iOS)
+        working-directory: apps/canvas-mobile-ref
+        run: |
+          npx cap add ios || true
+          npx cap sync ios
+
+      - name: Set up Ruby / CocoaPods
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: false
+
+      - name: Install xcpretty and CocoaPods
+        run: gem install xcpretty
+
+      - name: Install CocoaPods
+        working-directory: apps/canvas-mobile-ref/ios/App
+        run: pod install
+
+      - name: Build iOS (debug, simulator)
+        working-directory: apps/canvas-mobile-ref/ios/App
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -workspace App.xcworkspace \
+            -scheme App \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            ONLY_ACTIVE_ARCH=NO \
+            build \
+            | xcpretty

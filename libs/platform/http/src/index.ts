@@ -33,5 +33,9 @@ export { REQUEST_TIMEOUT, withTimeout } from './lib/interceptors/timeout.interce
 // Individual interceptors (for advanced composition)
 export { correlationIdInterceptor } from './lib/interceptors/correlation-id.interceptor';
 export { errorNormalizerInterceptor } from './lib/interceptors/error-normalizer.interceptor';
+export { offlineInterceptor } from './lib/interceptors/offline.interceptor';
 export { retryInterceptor } from './lib/interceptors/retry.interceptor';
 export { timeoutInterceptor } from './lib/interceptors/timeout.interceptor';
+
+// Network service
+export { NetworkService } from './lib/services/network.service';

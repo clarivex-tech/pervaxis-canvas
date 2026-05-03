@@ -4,9 +4,12 @@
   "peerDependencies": {
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0",
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/browser": "^6.0.0",
     "angular-oauth2-oidc": "^20.0.0",
     "@pervaxis/canvas-mfe-contracts": "^0.0.1",
-    "@pervaxis/canvas-platform-auth": "^0.0.1"
+    "@pervaxis/canvas-platform-auth": "^0.0.1",
+    "@pervaxis/canvas-shell-core": "^0.0.1"
   },
   "dependencies": {},
   "sideEffects": false
