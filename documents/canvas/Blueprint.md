@@ -280,6 +280,7 @@
 - [ ] `pr-check.yml` — lint, test, build, SonarCloud on every PR (affected only)
 - [ ] `publish.yml` — publish all libs to GitHub Packages on version tag push
 - [ ] SonarCloud project configured for `pervaxis-canvas`
+- [ ] Fix SonarCloud coverage reporting — add `coverage: { provider: 'v8', reporter: ['lcov', 'text'] }` to every library's `vite.config.mts` so `lcov.info` files are generated; SonarCloud currently shows 0% because `--coverage` flag alone only produces terminal output, not lcov files that `sonar.javascript.lcov.reportPaths` can consume (tests exist and pass at 90%+, this is purely a reporter config issue)
 - [ ] Quality gate — 90%+ coverage enforced on PRs
 - [ ] Automated `RELEASE_NOTES.md` update on tag
 - [ ] Dependabot configured for weekly dependency updates
