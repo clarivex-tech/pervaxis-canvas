@@ -240,3 +240,117 @@ Nx caches the project graph on disk. A freshly generated library's `vite.config.
 **Command:** `npx nx reset`
 
 **Applies to:** Every new library generation in this workspace, specifically before the first `nx test` or `nx lint` run.
+
+---
+
+## L011 — Always verify library API shapes before writing reference apps
+
+**Date:** 2026-05-04
+**Phase:** Phase 8 — Reference Applications
+**Rule:** Before writing any reference app config or page, read the actual TypeScript interface in the library source. Never guess property names from memory or docs — the compiler on CI will catch every mismatch, costing extra CI rounds.
+
+**Why:**
+During Phase 8 CI stabilisation, every wrong property name caused a typecheck failure discovered only on CI:
+- `CanvasErrorConfig`: `logToConsole` → **`enableConsoleLog`**
+- `CanvasI18nConfig`: `assetsPath` → **`translationsPath`**
+- `MfeBootstrapConfig`: `mfeName` → **`name`**
+- `NavItem`: missing required **`id`** field
+- `FieldType`: `'input'` is not valid — use **`'text'`**
+- `FieldConfig`: top-level `required` does not exist — use **`validation: { required: true }`**
+- `AuthContextService`: no `userId()` signal — use **`context()?.userId`**
+- `LocaleService`: `setLocale()` does not exist — use **`setLang()`**
+- `ShellRoutingService.registerMfeRoutes()`: takes **0 arguments**, not a manifests array
+
+**Process:** For every provider call or service usage in a new app, open the library's `src/lib/` source and read the interface/class definition before writing the consumer code.
+
+**Applies to:** Any reference app, generated print, or consumer of Canvas libraries.
+
+---
+
+## L012 — `ColDef` and ag-Grid types live in `ag-grid-community`, not `ag-grid-angular`
+
+**Date:** 2026-05-04
+**Phase:** Phase 8 — Reference Applications
+**Rule:** Import `ColDef`, `ValueFormatterParams`, `CellClickedEvent`, and all other ag-Grid type definitions from `ag-grid-community`. Only import Angular-specific classes (`AgGridAngular`, `ICellRendererAngularComp`, etc.) from `ag-grid-angular`.
+
+**Why:**
+`ag-grid-angular` re-exports Angular component bindings only. The core type definitions live in `ag-grid-community`. Importing `ColDef` from `ag-grid-angular` causes `Module '"ag-grid-angular"' has no exported member 'ColDef'`.
+
+```typescript
+// ✅ Correct
+import { ColDef, ValueFormatterParams, CellClickedEvent } from 'ag-grid-community';
+import { AgGridAngular } from 'ag-grid-angular';
+
+// ❌ Wrong
+import { ColDef } from 'ag-grid-angular';
+```
+
+**Applies to:** Every component in this workspace that uses ag-Grid column definitions or callback param types.
+
+---
+
+## L013 — Vite tsconfig path doubles in Nx monorepo unless `root: __dirname` is set
+
+**Date:** 2026-05-04
+**Phase:** Phase 8 — Reference Applications
+**Rule:** In `vite.config.mts` for Nx apps and libs, never pass a workspace-relative tsconfig string to the `angular()` plugin. Always use `root: __dirname` in `defineConfig` and omit the `tsconfig` arg (or resolve it with `resolve(__dirname, 'tsconfig.spec.json')`).
+
+**Why:**
+`@analogjs/vite-plugin-angular` resolves the `tsconfig` option relative to the vite config file location. In an Nx workspace the vite config lives at `apps/my-app/vite.config.mts`, so passing `tsconfig: 'apps/my-app/tsconfig.spec.json'` produces the doubled path `apps/my-app/apps/my-app/tsconfig.spec.json` — which does not exist on CI.
+
+```typescript
+// ✅ Correct — root: __dirname makes vite resolve paths from the project dir
+export default defineConfig({
+  root: __dirname,
+  plugins: [angular(), nxViteTsPaths()],
+  // ...
+});
+
+// ❌ Wrong — doubled path on CI
+export default defineConfig({
+  plugins: [angular({ tsconfig: 'apps/my-app/tsconfig.spec.json' })],
+});
+```
+
+**Applies to:** Every `vite.config.mts` for apps and libs in this workspace.
+
+---
+
+## L014 — Commit `package-lock.json` in the same PR as any `package.json` change
+
+**Date:** 2026-05-04
+**Phase:** Phase 8 — Reference Applications
+**Rule:** Whenever a dependency is added or removed from `package.json`, run `npm install` locally and commit the updated `package-lock.json` in the same commit. Never push a `package.json` change without the corresponding lock file update.
+
+**Why:**
+`npm ci` (used by all CI workflows) requires `package.json` and `package-lock.json` to be in perfect sync. Adding `@playwright/test` to `devDependencies` without running `npm install` caused all 4 CI workflows to fail immediately at the "Install dependencies" step with `npm error Missing: @playwright/test@x.y.z from lock file`. This blocked every other CI check.
+
+**Command to always run before committing a dependency change:**
+```bash
+npm install   # updates package-lock.json
+git add package.json package-lock.json
+```
+
+**Applies to:** Every PR that touches `package.json` in this workspace.
+
+---
+
+## L015 — Remove `e2e` from `nx run-many` in standard CI; Playwright needs a live server
+
+**Date:** 2026-05-04
+**Phase:** Phase 8 — Reference Applications
+**Rule:** Do not include `e2e` as a target in the main `nx run-many` CI step. Playwright tests require a running Angular dev server (and optionally Keycloak + json-server). The standard CI job only runs lint, test, build, and typecheck.
+
+**Why:**
+The Nx-generated `ci.yml` includes `e2e` in `npx nx run-many -t lint test build typecheck e2e`. Without a running `canvas-shell-ref` dev server at `localhost:4200`, every Playwright test fails immediately with `ERR_CONNECTION_REFUSED`. E2E should run in a dedicated job with `webServer` configured in `playwright.config.ts`, or be run locally only.
+
+**Fix applied to `.github/workflows/ci.yml`:**
+```yaml
+# Before
+- run: npx nx run-many -t lint test build typecheck e2e
+
+# After
+- run: npx nx run-many -t lint test build typecheck
+```
+
+**Applies to:** Any workflow that runs Playwright E2E as part of a general lint/test/build pipeline.
