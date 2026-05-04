@@ -1,0 +1,71 @@
+##############################################################################
+# Pervaxis Canvas — Local Development Stack
+#
+# Services:
+#   keycloak    — OIDC identity provider (localhost:8080)
+#   registry    — Canvas MFE registry mock (localhost:3100)
+#   api         — Mock backend API via json-server (localhost:3000)
+#
+# Usage:
+#   docker compose up -d          # Start all services
+#   docker compose down           # Stop and remove containers
+#   docker compose logs -f        # Tail logs
+##############################################################################
+
+version: '3.9'
+
+services:
+  # ---------------------------------------------------------------------------
+  # Keycloak — OIDC provider
+  # Admin console: http://localhost:8080/admin  (admin / admin)
+  # Realm config: import from documents/canvas/keycloak-realm.json
+  # ---------------------------------------------------------------------------
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0
+    command: start-dev --import-realm
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_PORT: 8080
+    volumes:
+      - ./documents/canvas/keycloak-realm.json:/opt/keycloak/data/import/realm.json:ro
+    ports:
+      - '8080:8080'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8080/health/ready']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # Canvas Registry mock — serves registry.json as a REST-like API
+  # GET http://localhost:3100/api/registry/{customerId}/remotes
+  # ---------------------------------------------------------------------------
+  registry:
+    image: clue/json-server:latest
+    command: --watch /data/registry-db.json --routes /data/routes.json --port 3100
+    volumes:
+      - ./documents/canvas/registry-db.json:/data/registry-db.json:ro
+      - ./documents/canvas/registry-routes.json:/data/routes.json:ro
+    ports:
+      - '3100:3100'
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '-O', '-', 'http://localhost:3100/remotes']
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # ---------------------------------------------------------------------------
+  # Mock API — json-server for backend API stubs
+  # GET http://localhost:3000/products
+  # ---------------------------------------------------------------------------
+  api:
+    image: clue/json-server:latest
+    command: --watch /data/db.json --port 3000
+    volumes:
+      - ./documents/canvas/api-db.json:/data/db.json:ro
+    ports:
+      - '3000:3000'
+
+volumes:
+  keycloak_data:

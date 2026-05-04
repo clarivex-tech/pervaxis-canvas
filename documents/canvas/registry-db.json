@@ -1,0 +1,12 @@
+{
+  "remotes": [
+    {
+      "id": "products-mfe",
+      "name": "products-mfe",
+      "remoteEntry": "http://localhost:4201/remoteEntry.json",
+      "exposedModule": "./Module",
+      "routePath": "products",
+      "permissions": []
+    }
+  ]
+}
