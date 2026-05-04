@@ -26,8 +26,6 @@ import {
   CanvasGridComponent,
   BadgeCellRendererComponent,
 } from '@pervaxis/canvas-components-web';
-import { AuthContextService } from '@pervaxis/canvas-platform-auth';
-import { MfeAuthContextService } from '@pervaxis/canvas-mfe-bootstrap';
 
 interface Product {
   id: string;
@@ -61,7 +59,6 @@ interface Product {
 })
 export class ProductListPage implements OnInit {
   readonly #router = inject(Router);
-  readonly #mfeAuth = inject(MfeAuthContextService);
 
   readonly loading = signal(true);
   readonly products = signal<Product[]>([]);

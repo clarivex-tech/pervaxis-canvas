@@ -49,7 +49,7 @@ test.describe('Mobile app — login flow', () => {
   });
 
   test('tapping sign-in opens external browser for OIDC', async ({ page, context }) => {
-    const popupPromise = context.waitForEvent('page');
+    void context.waitForEvent('page');
     await page.goto(`${MOBILE_URL}/auth`);
     await page.getByRole('button', { name: /sign in/i }).click();
     // On web/browser mode the OIDC redirect opens normally (no Capacitor Browser plugin)
