@@ -1,0 +1,19 @@
+{
+  "name": "@pervaxis/canvas-domain-customer",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Reference domain library — sample implementation for print developers",
+  "peerDependencies": {
+    "@angular/common": "^21.2.0",
+    "@angular/core": "^21.2.0",
+    "@angular/forms": "^21.2.0",
+    "@angular/router": "^21.2.0",
+    "@jsverse/transloco": "^8.0.0",
+    "@ngrx/signals": "^21.0.0",
+    "@pervaxis/canvas-components-web": "^0.0.1",
+    "@pervaxis/canvas-platform-auth": "^0.0.1",
+    "ag-grid-community": "^33.0.0",
+    "rxjs": ">=7.8.0"
+  },
+  "sideEffects": false
+}

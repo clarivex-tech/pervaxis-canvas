@@ -1,0 +1,49 @@
+{
+  "customer": {
+    "list": {
+      "title": "Customers",
+      "subtitle": "Manage your customer accounts",
+      "empty": "No customers found"
+    },
+    "detail": {
+      "title": "Customer Details"
+    },
+    "section": {
+      "basic": "Basic Information"
+    },
+    "form": {
+      "createTitle": "Create Customer",
+      "editTitle": "Edit Customer",
+      "code": "Code",
+      "name": "Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "industry": "Industry",
+      "status": "Status",
+      "submit": "Save"
+    },
+    "action": {
+      "create": "Create Customer",
+      "edit": "Edit",
+      "delete": "Delete",
+      "back": "Back",
+      "cancel": "Cancel"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "suspended": "Suspended"
+    },
+    "field": {
+      "id": "ID",
+      "code": "Code",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "industry": "Industry",
+      "status": "Status",
+      "createdAt": "Created",
+      "updatedAt": "Last Updated"
+    }
+  }
+}

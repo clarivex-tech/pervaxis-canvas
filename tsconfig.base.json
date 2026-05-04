@@ -37,7 +37,8 @@
       "@pervaxis/canvas-mfe-bootstrap": ["./libs/mfe/bootstrap/src/index.ts"],
       "@pervaxis/canvas-mfe-testing": ["./libs/mfe/testing/src/index.ts"],
       "@pervaxis/canvas-components-web": ["./libs/components/web/src/index.ts"],
-      "@pervaxis/canvas-components-mobile": ["./libs/components/mobile/src/index.ts"]
+      "@pervaxis/canvas-components-mobile": ["./libs/components/mobile/src/index.ts"],
+      "@pervaxis/canvas-domain-customer": ["./libs/domain/customer/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist"]
