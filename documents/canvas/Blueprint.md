@@ -20,7 +20,8 @@
 | Phase 8 — Reference Apps | 10 | 10 | 0 | 2026-05-04 | 2026-05-04 |
 | Phase 9 — Forge Integration | 14 | 0 | 14 | — | — |
 | Phase 10 — CI/CD and Publishing | 10 | 10 | 0 | 2026-05-04 | 2026-05-04 |
-| **Total** | **134** | **128** | **6** | | |
+| Phase 11 — Print Developer Sample Code | 14 | 0 | 14 | — | — |
+| **Total** | **148** | **128** | **20** | | |
 
 ---
 
@@ -290,6 +291,40 @@
 
 ---
 
+## Phase 11 — Print Developer Sample Code
+
+**Started:** — &nbsp;&nbsp; **Completed:** —
+
+> Goal: Provide canonical, copy-paste-ready sample code that print developers follow when building domain modules inside a Canvas print. Everything here is production-quality — not toy examples — so teams have a correct pattern to reference for every common scenario.
+
+### Domain library scaffold
+
+- [ ] `libs/domain/customer/` — sample domain lib with full Nx project.json, tsconfig, index.ts barrel
+- [ ] Domain model interfaces — `Customer`, `CustomerListItem`, `CustomerFilter`, `CreateCustomerDto`, `UpdateCustomerDto` (all in `@pervaxis/canvas-mfe-contracts` style, no duplication)
+- [ ] `CustomerApiService` — HTTP CRUD (list, getById, create, update, delete) using `CanvasHttpClient`; retry, timeout, typed responses
+- [ ] `CustomerStore` — NgRx Signals store with `customers` signal, `selected` signal, `loading`/`error` computed; `loadAll()`, `select()`, `create()`, `update()`, `remove()` actions
+
+### Domain screens (CRUD pattern)
+
+- [ ] `CustomerListPage` — `CanvasGridComponent` with typed `ColDef<CustomerListItem>[]`, server-side pagination, row-click → detail navigation
+- [ ] `CustomerDetailPage` — read-only view from store, breadcrumb via route data, `HasPermissionDirective` on edit button
+- [ ] `CustomerFormPage` — `FormEngineComponent` with domain schema (text, email, select, textarea fields), submit → `CustomerStore.create()` / `update()`, success/error toast
+
+### Cross-cutting integration
+
+- [ ] Permission integration — `HasPermissionDirective` on actions, `canActivate` route guard using `CanvasAuthService.hasPermission('customer:write')`
+- [ ] i18n integration — all UI strings via `transloco` pipe, `en.customer.json` translation file, locale-aware date formatting in grid
+- [ ] MFE remote wiring — `customer-mfe` registered in `canvas-shell-ref` via `registry.json`, `canvas-shell-ref` loads it at runtime via `ShellRoutingService`
+
+### Quality and documentation
+
+- [ ] Unit tests — 90%+ coverage for `CustomerApiService`, `CustomerStore`, all pages; uses `canvas-mfe-testing` harness and `CanvasHttpClientTestingModule`
+- [ ] `documents/canvas/PRINT_DEVELOPER_GUIDE.md` — step-by-step guide: create domain lib → add store → add API service → build CRUD screens → wire into MFE → register in shell → add i18n → add permissions
+- [ ] `documents/canvas/DOMAIN_CONVENTIONS.md` — print developer coding rules: file naming, signal patterns, store conventions, no NgModules, no `any`, OnPush everywhere, inject() over constructor DI
+- [ ] `CLAUDE.md` template for print-level Claude Code sessions — scoped to domain libs only, references Canvas public APIs, excludes shell/MFE internals
+
+---
+
 ## Definition of Done
 
 A phase is complete when:
@@ -317,6 +352,7 @@ A phase is complete when:
 | Phase 8 — Reference Apps | 5–7 days |
 | Phase 9 — Forge Integration | 10–14 days |
 | Phase 10 — CI/CD and Publishing | 3–4 days |
-| **Total** | **54–76 days** |
+| Phase 11 — Print Developer Sample Code | 4–6 days |
+| **Total** | **58–82 days** |
 
 Estimates assume one senior full-stack developer. Parallel work across phases reduces wall-clock time significantly.

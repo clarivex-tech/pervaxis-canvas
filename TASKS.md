@@ -244,3 +244,31 @@
 - [x] `FormEngineComponent.stories.ts` — Login, EditProfile stories ✅
 - [x] `CanvasGridComponent.stories.ts` — Default, WithPagination, MultiSelect stories ✅
 - [x] `project.json` — `storybook` (serve) and `build-storybook` targets added ✅
+
+---
+
+## Phase 11 — Print Developer Sample Code
+
+> Canonical sample domain code print developers copy and adapt. Each item is a concrete deliverable, not a doc placeholder.
+
+### Domain library scaffold
+- [ ] `libs/domain/customer/` — Nx lib with project.json, tsconfig, index.ts barrel
+- [ ] Domain interfaces — `Customer`, `CustomerListItem`, `CustomerFilter`, `CreateCustomerDto`, `UpdateCustomerDto`
+- [ ] `CustomerApiService` — CRUD over `CanvasHttpClient` with retry, timeout, typed generics
+- [ ] `CustomerStore` — NgRx Signals store: `customers`, `selected`, `loading`, `error` signals; `loadAll`, `select`, `create`, `update`, `remove` methods
+
+### CRUD screens
+- [ ] `CustomerListPage` — `CanvasGridComponent`, typed `ColDef<CustomerListItem>[]`, row-click navigation
+- [ ] `CustomerDetailPage` — read-only view, breadcrumb, `HasPermissionDirective` on edit action
+- [ ] `CustomerFormPage` — `FormEngineComponent` schema (text/email/select/textarea), create + update submit → store
+
+### Cross-cutting integration
+- [ ] Permission integration — `HasPermissionDirective`, `canActivate` guard using `CanvasAuthService.hasPermission('customer:write')`
+- [ ] i18n integration — `transloco` pipe throughout, `en.customer.json`, locale-aware date in grid
+- [ ] MFE remote wiring — `customer-mfe` in `registry.json`, loaded at runtime by `ShellRoutingService` in shell-ref
+
+### Quality and documentation
+- [ ] Unit tests — 90%+ coverage for `CustomerApiService`, `CustomerStore`, all pages using canvas-mfe-testing harness
+- [ ] `documents/canvas/PRINT_DEVELOPER_GUIDE.md` — step-by-step: domain lib → store → API service → CRUD screens → MFE wiring → i18n → permissions
+- [ ] `documents/canvas/DOMAIN_CONVENTIONS.md` — print developer rules: signal patterns, store shape, no NgModules, OnPush, inject()
+- [ ] `CLAUDE.md` print template — scoped to domain libs, references Canvas public APIs, excludes shell/MFE internals
