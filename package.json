@@ -84,7 +84,11 @@
     "verdaccio": "^6.3.2",
     "vite": "^7.3.2",
     "vitest": "4.0.9",
-    "@playwright/test": "^1.49.0"
+    "@playwright/test": "^1.49.0",
+    "@nx/storybook": "22.7.0",
+    "@storybook/angular": "^8.6.0",
+    "@storybook/addon-essentials": "^8.6.0",
+    "storybook": "^8.6.0"
   },
   "nx": {
     "includedScripts": []

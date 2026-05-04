@@ -23,6 +23,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../coverage/libs/mfe/contracts',
       provider: 'v8' as const,
+      reporter: ['lcov', 'text'],
     },
   },
 }));

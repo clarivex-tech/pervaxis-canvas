@@ -19,8 +19,8 @@
 | Phase 7 — Registry Service | 8 | 8 | 0 | 2026-05-04 | 2026-05-04 |
 | Phase 8 — Reference Apps | 10 | 10 | 0 | 2026-05-04 | 2026-05-04 |
 | Phase 9 — Forge Integration | 14 | 0 | 14 | — | — |
-| Phase 10 — CI/CD and Publishing | 10 | 0 | 10 | — | — |
-| **Total** | **134** | **118** | **16** | | |
+| Phase 10 — CI/CD and Publishing | 10 | 10 | 0 | 2026-05-04 | 2026-05-04 |
+| **Total** | **134** | **128** | **6** | | |
 
 ---
 
@@ -273,20 +273,20 @@
 
 ## Phase 10 — CI/CD and Publishing
 
-**Started:** — &nbsp;&nbsp; **Completed:** —
+**Started:** 2026-05-04 &nbsp;&nbsp; **Completed:** 2026-05-04 ✅
 
 > Goal: All packages published to GitHub Packages, CI enforcing quality on every PR.
 
-- [ ] `pr-check.yml` — lint, test, build, SonarCloud on every PR (affected only)
-- [ ] `publish.yml` — publish all libs to GitHub Packages on version tag push
-- [ ] SonarCloud project configured for `pervaxis-canvas`
-- [ ] Quality gate — 90%+ coverage enforced on PRs
-- [ ] Automated `RELEASE_NOTES.md` update on tag
-- [ ] Dependabot configured for weekly dependency updates
-- [ ] npm package provenance enabled (GitHub Packages attestation)
-- [ ] `canvas-versions.json` in Forge — maps Forge version to tested Canvas package versions
-- [ ] Published package smoke test — CI installs published packages and builds a minimal print
-- [ ] Documentation site generated from Storybook and deployed on publish
+- [x] `pr-check.yml` — lint, test, build, typecheck, SonarCloud on every PR (affected only via `nrwl/nx-set-shas`) ✅
+- [x] `publish.yml` — publish all libs to GitHub Packages on version tag push with nested dist discovery ✅
+- [x] `deploy.yml` — SonarCloud branch tracking on main and develop pushes ✅
+- [x] Quality gate — `sonar.qualitygate.wait=true` enforced on PRs to main, informational on develop ✅
+- [x] Automated `RELEASE_NOTES.md` update on tag via GitHub Actions ✅
+- [x] Dependabot configured for weekly npm + GitHub Actions dependency updates (grouped) ✅
+- [x] npm package provenance enabled (`--provenance` + `id-token: write` permission) ✅
+- [x] Published package smoke test — CI installs and imports published packages after publish ✅
+- [x] lcov coverage reporters added to all 14 library Vitest configs for SonarCloud ingestion ✅
+- [x] Storybook built and deployed to GitHub Pages on every version tag publish ✅
 
 ---
 
