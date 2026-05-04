@@ -44,3 +44,8 @@ export type { CanvasPushNotification, PushPermissionState } from './lib/notifica
 
 // Deep linking
 export { DeepLinkService } from './lib/deep-link/deep-link.service';
+
+// Registry client
+export { RegistryClientService } from './lib/registry/registry-client.service';
+export { CANVAS_REGISTRY_CONFIG } from './lib/registry/registry.types';
+export type { RegistryConfig, RegistryResponse } from './lib/registry/registry.types';

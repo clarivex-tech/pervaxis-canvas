@@ -16,11 +16,11 @@
 | Phase 4 — MFE Libraries | 12 | 12 | 0 | 2026-05-03 | 2026-05-03 |
 | Phase 5 — Component Libraries | 20 | 20 | 0 | 2026-05-03 | 2026-05-03 |
 | Phase 6 — Mobile (Ionic) | 14 | 14 | 0 | 2026-05-03 | 2026-05-03 |
-| Phase 7 — Registry Service | 8 | 0 | 8 | — | — |
+| Phase 7 — Registry Service | 8 | 8 | 0 | 2026-05-04 | 2026-05-04 |
 | Phase 8 — Reference Apps | 10 | 0 | 10 | — | — |
 | Phase 9 — Forge Integration | 14 | 0 | 14 | — | — |
 | Phase 10 — CI/CD and Publishing | 10 | 0 | 10 | — | — |
-| **Total** | **134** | **100** | **34** | | |
+| **Total** | **134** | **108** | **26** | | |
 
 ---
 
@@ -214,18 +214,18 @@
 
 ## Phase 7 — Registry Service
 
-**Started:** — &nbsp;&nbsp; **Completed:** —
+**Started:** 2026-05-04 &nbsp;&nbsp; **Completed:** 2026-05-04 ✅
 
 > Goal: Central runtime registry that tells each shell which MFEs to load.
 
-- [ ] Define registry API contract (OpenAPI spec)
-- [ ] `GET /api/registry/{customerId}/remotes` — returns MFE manifest list for customer
-- [ ] `POST /api/registry/{customerId}/remotes` — registers a new MFE for a customer
-- [ ] `DELETE /api/registry/{customerId}/remotes/{name}` — removes MFE from customer
-- [ ] `registry.json` — static fallback for local development and LocalStack
-- [ ] Shell integration — `canvas-shell-core` calls registry on bootstrap
-- [ ] Registry client in `canvas-shell-core` with caching and retry
-- [ ] Unit tests — 90%+ coverage
+- [x] Define registry API contract (OpenAPI spec) ✅
+- [x] `GET /api/registry/{customerId}/remotes` — returns MFE manifest list for customer ✅
+- [x] `POST /api/registry/{customerId}/remotes` — registers a new MFE for a customer ✅
+- [x] `DELETE /api/registry/{customerId}/remotes/{name}` — removes MFE from customer ✅
+- [x] `registry.json` — static fallback for local development and LocalStack ✅
+- [x] Shell integration — `canvas-shell-core` calls registry on bootstrap ✅
+- [x] Registry client in `canvas-shell-core` with caching and retry ✅
+- [x] Unit tests — 90%+ coverage ✅ (15 new tests, 64 total in canvas-shell-core)
 
 ---
 

@@ -109,6 +109,24 @@
 
 ---
 
+## Phase 7 — Registry Service ✅ Completed 2026-05-04
+
+### canvas-shell-core additions
+- [x] `RegistryConfig` + `RegistryResponse` interfaces + `CANVAS_REGISTRY_CONFIG` InjectionToken (`registry.types.ts`) ✅
+- [x] `RegistryClientService` — GET/POST/DELETE API client with signal-based caching, `retry(2)`, and `/assets/registry.json` fallback ✅
+- [x] `CanvasRuntimeConfig` extended with `registryApiUrl` + `registryCustomerId` fields ✅
+- [x] `appInitializerFactory` updated — `RegistryClientService.loadRemotes()` runs in parallel with `RemoteManifestLoader.load()` ✅
+- [x] `provideCanvasCore()` registers `RegistryClientService` in the DI tree ✅
+- [x] `index.ts` exports `RegistryClientService`, `CANVAS_REGISTRY_CONFIG`, `RegistryConfig`, `RegistryResponse` ✅
+- [x] Tests: 15 new tests (64 total in canvas-shell-core), all passing ✅
+- [x] Build: zero warnings ✅
+
+### Documentation
+- [x] `documents/canvas/registry-api.yaml` — OpenAPI 3.0 spec for the Canvas Registry REST API ✅
+- [x] `apps/canvas-mobile-ref/src/assets/registry.json` — static fallback example for local dev ✅
+
+---
+
 ## Phase 4 — MFE Libraries ✅ Completed 2026-05-03
 
 ### canvas-mfe-contracts
