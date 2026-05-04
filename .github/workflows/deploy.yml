@@ -35,17 +35,18 @@ jobs:
         run: npx nx run-many --target=build --all
 
       - name: SonarCloud Scan
-        if: github.ref_name == 'main' || github.event_name == 'workflow_dispatch'
         uses: SonarSource/sonarqube-scan-action@v6
         with:
           args: >
             -Dsonar.qualitygate.wait=false
+            -Dsonar.branch.name=${{ github.ref_name }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: https://sonarcloud.io
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: deploy-coverage-${{ github.run_id }}

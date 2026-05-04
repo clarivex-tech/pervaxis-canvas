@@ -9,6 +9,7 @@
   },
   "include": ["src/**/*.ts"],
   "exclude": [
+    "src/**/*.stories.ts",
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
     "vite.config.ts",

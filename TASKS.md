@@ -193,3 +193,82 @@
 - [x] mockCanvasSharedState() ✅
 - [x] Tests: 28 tests, 100% coverage ✅
 - [x] Build: zero warnings ✅
+
+---
+
+## Phase 8 — Reference Applications ✅ Completed 2026-05-04
+
+### canvas-shell-ref
+- [x] `AppComponent` — layout wiring with `NavItem[]` (id, label, path, icon) passed to shell layout ✅
+- [x] `AppConfig` — `provideCanvasCore`, `provideCanvasRouting`, `provideCanvasAuth`, `provideCanvasError`, `provideCanvasI18n` (translationsPath, defaultLang) ✅
+- [x] `DashboardPage` — auth context display, ECharts chart, Canvas section/page components ✅
+- [x] `SettingsPage` — locale switching via `I18nService.setLang()` ✅
+- [x] Playwright E2E — navigation, auth guard, 404 tests ✅
+- [x] Build: zero warnings ✅
+
+### canvas-mfe-ref
+- [x] `AppConfig` — `provideMfeBootstrap` with `name: 'products-mfe'`, translationsPath ✅
+- [x] `ProductListPage` — ag-Grid with typed `ColDef<Product>`, `ValueFormatterParams`, `CellClickedEvent` from `ag-grid-community` ✅
+- [x] `ProductDetailPage` — schema-driven `FormEngineComponent` with `type: 'text'`, `validation: { required: true }` ✅
+- [x] Playwright E2E — product list render, detail navigation tests ✅
+- [x] Build: zero warnings ✅
+
+### canvas-mobile-ref
+- [x] Vite config fixed — `root: __dirname` + `nxViteTsPaths()` to resolve doubled tsconfig path on CI ✅
+- [x] Build: zero warnings ✅
+
+### CI
+- [x] `ci.yml` — removed `e2e` from `run-many` targets (requires live server) ✅
+- [x] All 4 CI workflows (pr-check, deploy, ci, ios/android) passing on PR #16 ✅
+
+---
+
+## Phase 10 — CI/CD and Publishing ✅ Completed 2026-05-04
+
+### GitHub Actions
+- [x] `pr-check.yml` — `nx affected` with `nrwl/nx-set-shas@v4`; lint, test (lcov), build, typecheck; SonarCloud informational on develop, quality gate enforced on main ✅
+- [x] `deploy.yml` — SonarCloud branch tracking on every push to main/develop ✅
+- [x] `publish.yml` — nested dist discovery (`find dist/libs -name "package.json" -mindepth 2 -maxdepth 4`), provenance, smoke test, RELEASE_NOTES.md automation, Storybook deploy to GitHub Pages ✅
+- [x] `.github/dependabot.yml` — weekly npm (grouped: angular, nx, ngrx, ionic, testing) + GitHub Actions updates targeting develop ✅
+
+### SonarCloud
+- [x] `sonar-project.properties` — explicit per-library lcov paths for all 14 libs, `sonar.qualitygate.wait=true` ✅
+- [x] All 14 lib `vite.config.mts` — `reporter: ['lcov', 'text']` added for SonarCloud coverage ingestion ✅
+
+### Storybook
+- [x] `@nx/storybook`, `@storybook/angular`, `@storybook/addon-essentials`, `storybook` added to devDependencies ✅
+- [x] `libs/components/web/.storybook/main.ts` — Angular framework, essentials addons, autodocs ✅
+- [x] `libs/components/web/.storybook/preview.ts` — `applicationConfig` with `provideAnimations()` ✅
+- [x] `libs/components/web/tsconfig.storybook.json` — includes story + .storybook files, excludes from lib build ✅
+- [x] `PageComponent.stories.ts` — Default, WithSubtitle, LongTitle stories ✅
+- [x] `FormEngineComponent.stories.ts` — Login, EditProfile stories ✅
+- [x] `CanvasGridComponent.stories.ts` — Default, WithPagination, MultiSelect stories ✅
+- [x] `project.json` — `storybook` (serve) and `build-storybook` targets added ✅
+
+---
+
+## Phase 11 — Print Developer Sample Code
+
+> Canonical sample domain code print developers copy and adapt. Each item is a concrete deliverable, not a doc placeholder.
+
+### Domain library scaffold
+- [ ] `libs/domain/customer/` — Nx lib with project.json, tsconfig, index.ts barrel
+- [ ] Domain interfaces — `Customer`, `CustomerListItem`, `CustomerFilter`, `CreateCustomerDto`, `UpdateCustomerDto`
+- [ ] `CustomerApiService` — CRUD over `CanvasHttpClient` with retry, timeout, typed generics
+- [ ] `CustomerStore` — NgRx Signals store: `customers`, `selected`, `loading`, `error` signals; `loadAll`, `select`, `create`, `update`, `remove` methods
+
+### CRUD screens
+- [ ] `CustomerListPage` — `CanvasGridComponent`, typed `ColDef<CustomerListItem>[]`, row-click navigation
+- [ ] `CustomerDetailPage` — read-only view, breadcrumb, `HasPermissionDirective` on edit action
+- [ ] `CustomerFormPage` — `FormEngineComponent` schema (text/email/select/textarea), create + update submit → store
+
+### Cross-cutting integration
+- [ ] Permission integration — `HasPermissionDirective`, `canActivate` guard using `CanvasAuthService.hasPermission('customer:write')`
+- [ ] i18n integration — `transloco` pipe throughout, `en.customer.json`, locale-aware date in grid
+- [ ] MFE remote wiring — `customer-mfe` in `registry.json`, loaded at runtime by `ShellRoutingService` in shell-ref
+
+### Quality and documentation
+- [ ] Unit tests — 90%+ coverage for `CustomerApiService`, `CustomerStore`, all pages using canvas-mfe-testing harness
+- [ ] `documents/canvas/PRINT_DEVELOPER_GUIDE.md` — step-by-step: domain lib → store → API service → CRUD screens → MFE wiring → i18n → permissions
+- [ ] `documents/canvas/DOMAIN_CONVENTIONS.md` — print developer rules: signal patterns, store shape, no NgModules, OnPush, inject()
+- [ ] `CLAUDE.md` print template — scoped to domain libs, references Canvas public APIs, excludes shell/MFE internals

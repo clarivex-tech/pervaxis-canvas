@@ -27,6 +27,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../coverage/libs/components/mobile',
       provider: 'v8' as const,
+      reporter: ['lcov', 'text'],
     },
   },
 }));
