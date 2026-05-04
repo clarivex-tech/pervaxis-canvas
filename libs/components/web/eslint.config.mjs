@@ -16,6 +16,8 @@ export default [
             '{projectRoot}/vite.config.{ts,mts}',
             '{projectRoot}/vitest.config.{ts,mts}',
             '{projectRoot}/src/test-setup.ts',
+            '{projectRoot}/.storybook/**',
+            '{projectRoot}/src/**/*.stories.ts',
           ],
         },
       ],
