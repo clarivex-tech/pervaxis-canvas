@@ -17,10 +17,10 @@
 | Phase 5 — Component Libraries | 20 | 20 | 0 | 2026-05-03 | 2026-05-03 |
 | Phase 6 — Mobile (Ionic) | 14 | 14 | 0 | 2026-05-03 | 2026-05-03 |
 | Phase 7 — Registry Service | 8 | 8 | 0 | 2026-05-04 | 2026-05-04 |
-| Phase 8 — Reference Apps | 10 | 0 | 10 | — | — |
+| Phase 8 — Reference Apps | 10 | 10 | 0 | 2026-05-04 | 2026-05-04 |
 | Phase 9 — Forge Integration | 14 | 0 | 14 | — | — |
 | Phase 10 — CI/CD and Publishing | 10 | 0 | 10 | — | — |
-| **Total** | **134** | **108** | **26** | | |
+| **Total** | **134** | **118** | **16** | | |
 
 ---
 
@@ -231,20 +231,20 @@
 
 ## Phase 8 — Reference Applications
 
-**Started:** — &nbsp;&nbsp; **Completed:** —
+**Started:** 2026-05-04 &nbsp;&nbsp; **Completed:** 2026-05-04 ✅
 
 > Goal: Prove all Canvas packages work together end-to-end in realistic apps.
 
-- [ ] `canvas-shell-ref` — full Angular 18 shell host with auth, layout, dynamic MFE loading
-- [ ] `canvas-mfe-ref` — full Angular 18 MFE remote registered in shell-ref
-- [ ] `canvas-mobile-ref` — full Ionic app consuming platform libs, auth, and mobile components
-- [ ] End-to-end test suite covering shell → MFE navigation flow
-- [ ] End-to-end test suite covering auth flow (OIDC login → token → protected route)
-- [ ] End-to-end test suite covering mobile auth and navigation
-- [ ] Performance baseline documented (Lighthouse scores for web, app startup time for mobile)
-- [ ] LocalStack integration guide for local development
-- [ ] Docker Compose file for running OIDC provider + registry locally
-- [ ] README with complete local development setup instructions
+- [x] `canvas-shell-ref` — full Angular shell host with auth, layout, dynamic MFE loading, registry integration ✅
+- [x] `canvas-mfe-ref` — full Angular MFE remote (Products) registered in shell-ref ✅
+- [x] `canvas-mobile-ref` — full Ionic app consuming platform libs, auth, and mobile components ✅ (Phase 6)
+- [x] End-to-end test suite covering shell → MFE navigation flow ✅ (`e2e/canvas-shell-e2e/src/shell-navigation.spec.ts`)
+- [x] End-to-end test suite covering auth flow (OIDC login → token → protected route) ✅ (`e2e/canvas-shell-e2e/src/auth-flow.spec.ts`)
+- [x] End-to-end test suite covering mobile auth and navigation ✅ (`e2e/canvas-shell-e2e/src/mobile-app.spec.ts`)
+- [x] Performance baseline documented (Lighthouse scores for web, app startup time for mobile) ✅ (`documents/canvas/performance-baseline.md`)
+- [x] LocalStack integration guide for local development ✅ (`documents/canvas/localstack-guide.md`)
+- [x] Docker Compose file for running OIDC provider + registry locally ✅ (`docker-compose.yml`)
+- [x] README with complete local development setup instructions ✅ (workspace `README.md` updated)
 
 ---
 

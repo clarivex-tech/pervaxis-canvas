@@ -1,0 +1,35 @@
+/* Canvas Shell — global styles */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #1e293b;
+  background: #f8fafc;
+}
+
+:root {
+  /* Canvas web design tokens */
+  --canvas-color-primary: #2563eb;
+  --canvas-color-primary-hover: #1d4ed8;
+  --canvas-color-surface: #ffffff;
+  --canvas-color-border: #e2e8f0;
+  --canvas-color-text: #1e293b;
+  --canvas-color-text-muted: #64748b;
+  --canvas-radius-md: 0.5rem;
+  --canvas-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  --canvas-spacing-page: 1.5rem;
+  --canvas-sidebar-width: 240px;
+  --canvas-sidebar-width-collapsed: 60px;
+  --canvas-header-height: 60px;
+}

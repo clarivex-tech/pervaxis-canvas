@@ -1,0 +1,74 @@
+{
+  "name": "canvas-mfe-ref",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/canvas-mfe-ref/src",
+  "prefix": "app",
+  "tags": ["type:app", "scope:web"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/canvas-mfe-ref",
+        "index": "apps/canvas-mfe-ref/src/index.html",
+        "browser": "apps/canvas-mfe-ref/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/canvas-mfe-ref/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/canvas-mfe-ref/src/assets",
+            "output": "assets"
+          }
+        ],
+        "styles": ["apps/canvas-mfe-ref/src/global.scss"],
+        "scripts": [],
+        "stylePreprocessorOptions": {
+          "includePaths": ["node_modules/"]
+        }
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "sourceMap": false,
+          "namedChunks": false,
+          "aot": true,
+          "extractLicenses": true,
+          "budgets": [
+            { "type": "initial", "maximumWarning": "2mb", "maximumError": "5mb" },
+            { "type": "anyComponentStyle", "maximumWarning": "6kb", "maximumError": "10kb" }
+          ]
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular/build:dev-server",
+      "configurations": {
+        "production": { "buildTarget": "canvas-mfe-ref:build:production" },
+        "development": { "buildTarget": "canvas-mfe-ref:build:development" }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "port": 4201
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{workspaceRoot}/coverage/apps/canvas-mfe-ref"],
+      "options": {
+        "configFile": "apps/canvas-mfe-ref/vite.config.mts"
+      }
+    }
+  }
+}

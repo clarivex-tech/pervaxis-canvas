@@ -1,0 +1,17 @@
+{
+  "products": {
+    "title": "Products",
+    "subtitle": "Browse and manage the product catalogue",
+    "loading": "Loading products...",
+    "empty": "No products found",
+    "name": "Name",
+    "price": "Price",
+    "status": "Status",
+    "actions": "Actions",
+    "view": "View",
+    "detail": {
+      "title": "Product Detail",
+      "back": "Back to Products"
+    }
+  }
+}

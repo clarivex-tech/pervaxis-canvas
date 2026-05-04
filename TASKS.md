@@ -109,6 +109,46 @@
 
 ---
 
+## Phase 8 — Reference Applications ✅ Completed 2026-05-04
+
+### canvas-shell-ref (new app)
+- [x] Full Angular shell host app (`apps/canvas-shell-ref/`) ✅
+- [x] All Canvas shell providers wired: core, auth, routing, layout, http, state, error, i18n ✅
+- [x] `AppComponent` uses `ShellLayoutComponent` with sidebar nav items ✅
+- [x] Routes: `/login`, `/dashboard` (auth-guarded), `/settings` (auth-guarded), `**` → CanvasNotFoundComponent ✅
+- [x] `DashboardPage` — shows authenticated user info + loaded MFE remotes ✅
+- [x] `SettingsPage` — locale switcher + logout via FormEngineComponent ✅
+- [x] `LoginPage` — OIDC redirect via ShellAuthService ✅
+- [x] `src/assets/config.json` — runtime config for local dev stack ✅
+- [x] `src/assets/registry.json` — static fallback ✅
+- [x] Tests: passWithNoTests ✅ · Lint: clean ✅
+
+### canvas-mfe-ref (new app)
+- [x] Full Angular MFE remote app (`apps/canvas-mfe-ref/`) — Products feature ✅
+- [x] `provideMfeBootstrap()` wired with `mfeName: 'products-mfe'` ✅
+- [x] Routes: `''` → ProductListPage (permissionGuard), `:id` → ProductDetailPage ✅
+- [x] `ProductListPage` — `CanvasGridComponent` (ag-Grid) with `BadgeCellRendererComponent` ✅
+- [x] `ProductDetailPage` — `FormEngineComponent` for edit with `input()` route param ✅
+- [x] `src/assets/i18n/en.json` — translation file ✅
+- [x] Tests: passWithNoTests ✅ · Lint: clean ✅
+
+### E2E — Playwright (canvas-shell-e2e)
+- [x] `e2e/canvas-shell-e2e/` — Playwright project with 3 spec files ✅
+- [x] `shell-navigation.spec.ts` — layout, sidebar, MFE route loading, 404 ✅
+- [x] `auth-flow.spec.ts` — OIDC login, JWT injection, auth guard, logout ✅
+- [x] `mobile-app.spec.ts` — ion-app, login, home page, touch targets ✅
+- [x] `@playwright/test` added to package.json devDependencies ✅
+
+### Infrastructure and Docs
+- [x] `docker-compose.yml` — Keycloak + json-server registry + mock API ✅
+- [x] `documents/canvas/registry-db.json` + `registry-routes.json` — json-server data ✅
+- [x] `documents/canvas/api-db.json` — mock products API data ✅
+- [x] `documents/canvas/localstack-guide.md` — full local dev walkthrough ✅
+- [x] `documents/canvas/performance-baseline.md` — Lighthouse + bundle targets ✅
+- [x] `README.md` — workspace README with local setup, commands, app table ✅
+
+---
+
 ## Phase 7 — Registry Service ✅ Completed 2026-05-04
 
 ### canvas-shell-core additions

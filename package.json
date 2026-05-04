@@ -10,7 +10,8 @@
     "lint": "nx run-many --target=lint --all",
     "affected:build": "nx affected --target=build",
     "affected:test": "nx affected --target=test",
-    "affected:lint": "nx affected --target=lint"
+    "affected:lint": "nx affected --target=lint",
+    "e2e": "nx run canvas-shell-e2e:e2e"
   },
   "dependencies": {
     "@angular/animations": "21.2.9",
@@ -82,7 +83,8 @@
     "typescript-eslint": "^8.40.0",
     "verdaccio": "^6.3.2",
     "vite": "^7.3.2",
-    "vitest": "4.0.9"
+    "vitest": "4.0.9",
+    "@playwright/test": "^1.49.0"
   },
   "nx": {
     "includedScripts": []
