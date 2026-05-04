@@ -20,7 +20,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Pipe, PipeTransform, signal } from '@angular/core';
 import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { FormEngineComponent } from '@pervaxis/canvas-components-web';
+import { FormEngineComponent, PageComponent } from '@pervaxis/canvas-components-web';
 import { CustomerFormPage } from './customer-form.page';
 import { CustomerStore } from '../../state/customer.store';
 import { Customer } from '../../models/customer.model';
@@ -70,7 +70,7 @@ describe('CustomerFormPage — create flow', () => {
       ],
     })
       .overrideComponent(CustomerFormPage, {
-        remove: { imports: [TranslocoPipe, FormEngineComponent] },
+        remove: { imports: [TranslocoPipe, PageComponent, FormEngineComponent] },
         add: { imports: [MockTranslocoPipe, StubPageComponent, StubFormEngineComponent] },
       })
       .compileComponents();
@@ -124,7 +124,7 @@ describe('CustomerFormPage — edit flow', () => {
       ],
     })
       .overrideComponent(CustomerFormPage, {
-        remove: { imports: [TranslocoPipe, FormEngineComponent] },
+        remove: { imports: [TranslocoPipe, PageComponent, FormEngineComponent] },
         add: { imports: [MockTranslocoPipe, StubPageComponent, StubFormEngineComponent] },
       })
       .compileComponents();

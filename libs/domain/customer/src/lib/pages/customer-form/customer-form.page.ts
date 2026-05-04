@@ -161,7 +161,7 @@ export class CustomerFormPage implements OnInit {
     if (id) {
       result = await this.store.update(id, value as UpdateCustomerDto);
     } else {
-      result = await this.store.create(value as CreateCustomerDto);
+      result = await this.store.create(value as unknown as CreateCustomerDto);
     }
 
     void this.router.navigate(['/customers', result.id]);

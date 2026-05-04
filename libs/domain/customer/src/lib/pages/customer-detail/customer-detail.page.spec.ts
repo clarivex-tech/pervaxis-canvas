@@ -20,10 +20,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Pipe, PipeTransform, signal } from '@angular/core';
 import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { PageComponent, SectionComponent } from '@pervaxis/canvas-components-web';
+import { HasPermissionDirective, AuthContextService } from '@pervaxis/canvas-platform-auth';
 import { CustomerDetailPage } from './customer-detail.page';
 import { CustomerStore } from '../../state/customer.store';
 import { Customer } from '../../models/customer.model';
-import { AuthContextService } from '@pervaxis/canvas-platform-auth';
 
 @Pipe({ name: 'transloco', standalone: true, pure: true })
 class MockTranslocoPipe implements PipeTransform {
@@ -72,8 +73,12 @@ describe('CustomerDetailPage', () => {
       ],
     })
       .overrideComponent(CustomerDetailPage, {
-        remove: { imports: [TranslocoPipe] },
-        add: { imports: [MockTranslocoPipe, StubPageComponent, StubSectionComponent] },
+        remove: {
+          imports: [TranslocoPipe, HasPermissionDirective, PageComponent, SectionComponent],
+        },
+        add: {
+          imports: [MockTranslocoPipe, StubPageComponent, StubSectionComponent],
+        },
       })
       .compileComponents();
 

@@ -53,4 +53,12 @@ export default [
     files: ['**/*.html'],
     rules: {},
   },
+  {
+    // Stub components/directives in test files don't need to follow production selector rules
+    files: ['**/*.spec.ts'],
+    rules: {
+      '@angular-eslint/component-selector': 'off',
+      '@angular-eslint/directive-selector': 'off',
+    },
+  },
 ];

@@ -20,6 +20,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Pipe, PipeTransform, signal } from '@angular/core';
 import { provideRouter, Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
+import {
+  CanvasGridComponent,
+  DataViewComponent,
+  PageComponent,
+} from '@pervaxis/canvas-components-web';
+import { HasPermissionDirective } from '@pervaxis/canvas-platform-auth';
 import { RowClickedEvent } from 'ag-grid-community';
 import { CustomerListPage } from './customer-list.page';
 import { CustomerStore } from '../../state/customer.store';
@@ -76,8 +82,18 @@ describe('CustomerListPage', () => {
       ],
     })
       .overrideComponent(CustomerListPage, {
-        remove: { imports: [TranslocoPipe] },
-        add: { imports: [MockTranslocoPipe, StubPageComponent, StubDataViewComponent, StubCanvasGridComponent] },
+        remove: {
+          imports: [
+            TranslocoPipe,
+            HasPermissionDirective,
+            PageComponent,
+            DataViewComponent,
+            CanvasGridComponent,
+          ],
+        },
+        add: {
+          imports: [MockTranslocoPipe, StubPageComponent, StubDataViewComponent, StubCanvasGridComponent],
+        },
       })
       .compileComponents();
 
