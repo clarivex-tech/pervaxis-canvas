@@ -2,22 +2,65 @@
 
 **Angular platform framework for web and mobile — by [Clarivex Technologies](https://clarivex.tech)**
 
-Canvas is the shared foundation that every Pervaxis product is built on. It provides the full infrastructure layer — authentication, HTTP, state management, error handling, internationalisation, shell hosting, and UI components — so that product teams start from a working platform, not a blank workspace.
+Canvas is the shared foundation that every Pervaxis product is built on. It provides the
+full infrastructure layer — authentication, HTTP, state management, error handling,
+internationalisation, shell hosting, and UI components — so that product teams start from
+a working platform, not a blank workspace.
 
 ---
 
 ## What This Repository Is
 
-This is the Nx monorepo for the `@pervaxis/canvas-*` Angular library suite. It produces independently publishable npm packages consumed by every Pervaxis product shell and its micro-frontends.
+This is the Nx monorepo for the `@pervaxis/canvas-*` Angular library suite. It produces
+independently publishable npm packages consumed by every Pervaxis product shell and its
+micro-frontends (MFEs).
 
-Canvas is not an application. It is a set of Angular libraries with a strict boundary model:
+Canvas is **not an application**. It is a set of Angular libraries with a strict boundary
+model plus a sample domain library showing print developers the correct patterns.
 
-| Layer | Libraries | Purpose |
+---
+
+## Library Reference
+
+### Platform Libraries
+
+| Package | Path | Purpose |
 |---|---|---|
-| **Platform** | `canvas-platform-http`, `canvas-platform-auth`, `canvas-platform-state`, `canvas-platform-error`, `canvas-platform-i18n` | Cross-platform services — web and mobile |
-| **Shell** | `canvas-shell-core`, `canvas-shell-routing`, `canvas-shell-auth`, `canvas-shell-layout` | Angular host app framework and MFE orchestration |
-| **MFE** | `canvas-mfe-bootstrap`, `canvas-mfe-contracts`, `canvas-mfe-testing` | Micro-frontend bootstrap helpers, shared contracts, and test harnesses |
-| **Components** | `canvas-components-web`, `canvas-components-mobile` | UI components — browser (ag-Grid, ECharts) and Ionic mobile |
+| `@pervaxis/canvas-platform-http` | `libs/platform/http` | HttpClient interceptor stack: retry, timeout, correlation ID, error normalisation |
+| `@pervaxis/canvas-platform-auth` | `libs/platform/auth` | `AuthContextService`, `HasPermissionDirective`, `HasRoleDirective`, `authGuard`, `permissionGuard` |
+| `@pervaxis/canvas-platform-state` | `libs/platform/state` | NgRx Signals store helpers, shared state service, Redux DevTools bridge |
+| `@pervaxis/canvas-platform-error` | `libs/platform/error` | Global error handler, `ErrorBoundaryComponent` |
+| `@pervaxis/canvas-platform-i18n` | `libs/platform/i18n` | Transloco configuration, `CanvasTranslocoLoader`, `LocaleService` |
+
+### Shell Libraries
+
+| Package | Path | Purpose |
+|---|---|---|
+| `@pervaxis/canvas-shell-core` | `libs/shell/core` | Bootstrap helpers, runtime config, MFE host registry |
+| `@pervaxis/canvas-shell-routing` | `libs/shell/routing` | Dynamic route registration from MFE manifests |
+| `@pervaxis/canvas-shell-auth` | `libs/shell/auth` | OIDC flow, JWT interceptor, silent token refresh |
+| `@pervaxis/canvas-shell-layout` | `libs/shell/layout` | Root layout, navigation shell, sidebar, breadcrumbs |
+
+### MFE Libraries
+
+| Package | Path | Purpose |
+|---|---|---|
+| `@pervaxis/canvas-mfe-contracts` | `libs/mfe/contracts` | Shared interfaces, InjectionTokens, event bus types |
+| `@pervaxis/canvas-mfe-bootstrap` | `libs/mfe/bootstrap` | Standalone MFE bootstrap helpers |
+| `@pervaxis/canvas-mfe-testing` | `libs/mfe/testing` | MFE test harness and mock providers for unit tests |
+
+### Component Libraries
+
+| Package | Path | Purpose |
+|---|---|---|
+| `@pervaxis/canvas-components-web` | `libs/components/web` | `PageComponent`, `DataViewComponent`, `SectionComponent`, `FormEngineComponent`, `CanvasGridComponent`, chart components |
+| `@pervaxis/canvas-components-mobile` | `libs/components/mobile` | Ionic wrappers for iOS/Android |
+
+### Sample Domain Library
+
+| Package | Path | Purpose |
+|---|---|---|
+| `@pervaxis/canvas-domain-customer` | `libs/domain/customer` | Reference CRUD implementation for print developers |
 
 ---
 
@@ -25,25 +68,27 @@ Canvas is not an application. It is a set of Angular libraries with a strict bou
 
 | Technology | Version |
 |---|---|
-| Angular | 18.x |
-| Nx | 19.x |
-| TypeScript | 5.4+ |
-| NgRx Signals | 18.x |
+| Angular | 21.x |
+| Nx | 22.x |
+| TypeScript | 5.9+ |
+| NgRx Signals | 21.x |
 | Ionic | 8.x |
-| Native Federation | 18.x |
-| Jest | Latest |
+| ag-Grid Community | 33.x |
+| ECharts | 5.x |
+| Transloco | 8.x |
+| Vitest | 4.x |
+| Storybook | 10.x |
+| Playwright | 1.x |
 
 ---
 
-## Development Standards
+## Prerequisites
 
-- Standalone Angular components only — no NgModules
-- `OnPush` change detection on every component
-- `inject()` over constructor injection
-- Signals for component state, observables for async streams
-- No `any` type — strict TypeScript enforced
-- 90%+ test coverage target
-- All shared types and contracts live in `canvas-mfe-contracts` only
+| Tool | Minimum version |
+|---|---|
+| Node.js | 20 LTS |
+| npm | 10+ |
+| Docker Desktop | Any recent version |
 
 ---
 
@@ -79,25 +124,28 @@ nx serve canvas-mfe-ref       # MFE remote   → http://localhost:4201
 nx serve canvas-mobile-ref    # Mobile app   → http://localhost:4202
 ```
 
-### 4. Run E2E tests
+### 4. Run Storybook
 
 ```bash
-npm run e2e          # Headless Playwright
-nx run canvas-shell-e2e:e2e-ui    # Playwright interactive UI
+nx run canvas-components-web:storybook   # → http://localhost:4400
+```
+
+### 5. Run E2E tests
+
+```bash
+npm run e2e                             # Headless Playwright
+nx run canvas-shell-e2e:e2e-ui         # Interactive Playwright UI
 ```
 
 ---
 
-## Library Commands
+## Common Commands
 
 ```bash
-# Install dependencies
-npm install
-
 # Build all libraries
 nx run-many --target=build --all
 
-# Build affected libraries only
+# Build only what changed
 nx affected --target=build
 
 # Run all tests
@@ -132,8 +180,16 @@ pervaxis-canvas/
 │   ├── platform/             canvas-platform-{http,auth,state,error,i18n}
 │   ├── shell/                canvas-shell-{core,routing,auth,layout}
 │   ├── mfe/                  canvas-mfe-{bootstrap,contracts,testing}
-│   └── components/           canvas-components-{web,mobile}
-├── documents/canvas/         Blueprint, specs, guides, OpenAPI specs, Docker data
+│   ├── components/           canvas-components-{web,mobile}
+│   └── domain/
+│       └── customer/         Reference domain implementation for print devs
+├── documents/canvas/
+│   ├── Blueprint.md          Development roadmap and phase tracker
+│   ├── Specifications.md     Technical specifications
+│   ├── LessonsLearnt.md      Engineering principles from real experience
+│   ├── Challenges.md         Technical obstacles and their resolutions
+│   ├── PRINT_DEVELOPER_GUIDE.md  How to build domain modules
+│   └── DOMAIN_CONVENTIONS.md    Coding rules for domain/print developers
 ├── docker-compose.yml        OIDC + registry + API dev stack
 ├── .github/workflows/
 │   ├── pr-check.yml          Lint · Test · Build · SonarCloud on PRs
@@ -148,6 +204,45 @@ pervaxis-canvas/
 
 ---
 
+## Development Standards
+
+- **Standalone components** — `standalone: true` always; no NgModules
+- **OnPush everywhere** — `changeDetection: ChangeDetectionStrategy.OnPush`
+- **Signals for state** — NgRx Signals; no classic actions/reducers for local state
+- **`inject()` not constructor** — use `inject()` in standalone components
+- **No `any`** — TypeScript strict mode enforced
+- **90%+ coverage** — enforced in CI via Vitest v8 + SonarCloud
+- **Contracts in one place** — all shared types live in `@pervaxis/canvas-mfe-contracts`
+- **i18n always** — no hardcoded strings; all labels go through `transloco`
+
+---
+
+## For Print Developers
+
+Print developers build domain modules (e.g. `canvas-domain-customer`) on top of the
+Canvas platform libraries. See the dedicated guides:
+
+| Guide | Purpose |
+|---|---|
+| `documents/canvas/PRINT_DEVELOPER_GUIDE.md` | Step-by-step walkthrough with code examples |
+| `documents/canvas/DOMAIN_CONVENTIONS.md` | Naming, structure, and coding rules |
+| `libs/domain/customer/` | Reference implementation — copy and adapt |
+
+**Quick checklist for a new domain library:**
+
+1. Generate with `nx g @nx/angular:library --name=canvas-domain-<noun> --directory=libs/domain/<noun>`
+2. Add path alias to `tsconfig.base.json`
+3. Define models in `src/lib/models/<noun>.model.ts`
+4. Write `<Noun>ApiService` using `HttpClient`
+5. Write `<Noun>Store` using `signalStore`
+6. Write List, Detail, Form pages using Canvas components
+7. Wire routes with `authGuard` + `permissionGuard`
+8. Add i18n keys to `src/assets/i18n/en.<noun>.json`
+9. Write unit tests — 90%+ coverage required
+10. Register lcov path in `sonar-project.properties`
+
+---
+
 ## CI/CD
 
 | Trigger | Workflow | What runs |
@@ -155,6 +250,8 @@ pervaxis-canvas/
 | PR → `main` | `pr-check.yml` | Lint, test, build, SonarCloud quality gate |
 | Push to `main` / `develop` | `deploy.yml` | Lint, test, build, SonarCloud tracking |
 | Tag `v*.*.*` | `publish.yml` | Build + publish packages to GitHub Packages |
+| iOS release | `ios.yml` | Capacitor iOS build and archive |
+| Android release | `android.yml` | Capacitor Android build and APK/AAB |
 
 Packages are published to the GitHub Packages npm registry under the `@pervaxis` scope.
 
@@ -165,10 +262,22 @@ Packages are published to the GitHub Packages npm registry under the `@pervaxis`
 ```
 feat(scope): description
 fix(scope): description
+docs(scope): description
 refactor(scope): description
 test(scope): description
-chore(scope): description
 ```
+
+Scopes follow the library name suffix: `platform-http`, `shell-auth`, `components-web`,
+`domain-customer`, etc.
+
+---
+
+## Contributing
+
+1. Branch from `develop`: `git checkout -b feature/Phase-<N>-<description>`
+2. Follow `.claude/CLAUDE.md` and `.claude/guides/GIT_WORKFLOW.md`
+3. Open a PR against `develop` — all CI checks must pass before merge
+4. SonarCloud quality gate must be green (90%+ coverage, 0 critical issues)
 
 ---
 
@@ -176,4 +285,5 @@ chore(scope): description
 
 Copyright © 2026 Clarivex Technologies Private Limited. All rights reserved.
 
-This software is proprietary. Unauthorised use, reproduction, or distribution is strictly prohibited. See `LICENSE` for details.
+This software is proprietary. Unauthorised use, reproduction, or distribution is strictly
+prohibited. See `LICENSE` for details.

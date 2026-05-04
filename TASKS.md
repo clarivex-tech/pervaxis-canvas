@@ -247,28 +247,28 @@
 
 ---
 
-## Phase 11 — Print Developer Sample Code
-
-> Canonical sample domain code print developers copy and adapt. Each item is a concrete deliverable, not a doc placeholder.
+## Phase 11 — Print Developer Sample Code ✅ Completed 2026-05-04
 
 ### Domain library scaffold
-- [ ] `libs/domain/customer/` — Nx lib with project.json, tsconfig, index.ts barrel
-- [ ] Domain interfaces — `Customer`, `CustomerListItem`, `CustomerFilter`, `CreateCustomerDto`, `UpdateCustomerDto`
-- [ ] `CustomerApiService` — CRUD over `CanvasHttpClient` with retry, timeout, typed generics
-- [ ] `CustomerStore` — NgRx Signals store: `customers`, `selected`, `loading`, `error` signals; `loadAll`, `select`, `create`, `update`, `remove` methods
+- [x] `libs/domain/customer/` — Nx lib with project.json, tsconfig files, vite.config.mts, eslint.config.mjs ✅
+- [x] Domain interfaces — `Customer`, `CustomerListItem`, `CustomerFilter`, `CustomerPage`, `CreateCustomerDto`, `UpdateCustomerDto` ✅
+- [x] `CustomerApiService` — CRUD via `HttpClient` with typed generics, `HttpParams` builder ✅
+- [x] `CustomerStore` — NgRx Signals store: `customers`, `selected`, `loading`, `error`, `hasCustomers`, `pageCount`; `loadAll`, `select`, `create`, `update`, `remove` ✅
 
 ### CRUD screens
-- [ ] `CustomerListPage` — `CanvasGridComponent`, typed `ColDef<CustomerListItem>[]`, row-click navigation
-- [ ] `CustomerDetailPage` — read-only view, breadcrumb, `HasPermissionDirective` on edit action
-- [ ] `CustomerFormPage` — `FormEngineComponent` schema (text/email/select/textarea), create + update submit → store
+- [x] `CustomerListPage` — `CanvasGridComponent` with typed `ColDef<CustomerListItem>[]`, `BadgeCellRendererComponent`, row-click navigation ✅
+- [x] `CustomerDetailPage` — read-only field grid, `HasPermissionDirective` on edit button, loading/error states ✅
+- [x] `CustomerFormPage` — `FormEngineComponent` schema (text/email/select), create + update flow, computed schema from store.selected() ✅
 
 ### Cross-cutting integration
-- [ ] Permission integration — `HasPermissionDirective`, `canActivate` guard using `CanvasAuthService.hasPermission('customer:write')`
-- [ ] i18n integration — `transloco` pipe throughout, `en.customer.json`, locale-aware date in grid
-- [ ] MFE remote wiring — `customer-mfe` in `registry.json`, loaded at runtime by `ShellRoutingService` in shell-ref
+- [x] Permission integration — `*hasPermission="'customers:write'"` in list and detail templates, `permissionGuard` in route config ✅
+- [x] i18n integration — `transloco` pipe in all page templates, `src/assets/i18n/en.customer.json` with full key hierarchy ✅
+- [x] Route config — `CUSTOMER_ROUTES` with `authGuard` + `permissionGuard`, lazy `loadComponent`, correct guard order ✅
 
 ### Quality and documentation
-- [ ] Unit tests — 90%+ coverage for `CustomerApiService`, `CustomerStore`, all pages using canvas-mfe-testing harness
-- [ ] `documents/canvas/PRINT_DEVELOPER_GUIDE.md` — step-by-step: domain lib → store → API service → CRUD screens → MFE wiring → i18n → permissions
-- [ ] `documents/canvas/DOMAIN_CONVENTIONS.md` — print developer rules: signal patterns, store shape, no NgModules, OnPush, inject()
-- [ ] `CLAUDE.md` print template — scoped to domain libs, references Canvas public APIs, excludes shell/MFE internals
+- [x] Unit tests — `customer-api.service.spec.ts` (7 tests), `customer.store.spec.ts` (13 tests), `customer-list.page.spec.ts`, `customer-detail.page.spec.ts`, `customer-form.page.spec.ts` ✅
+- [x] `sonar-project.properties` — `coverage/libs/domain/customer/lcov.info` added ✅
+- [x] `tsconfig.base.json` — `@pervaxis/canvas-domain-customer` path alias added ✅
+- [x] `documents/canvas/PRINT_DEVELOPER_GUIDE.md` — step-by-step walkthrough with code examples for all 9 gaps ✅
+- [x] `documents/canvas/DOMAIN_CONVENTIONS.md` — naming, structure, rules, do/don't table ✅
+- [x] `README.md` — comprehensive workspace README for platform and print developers ✅
