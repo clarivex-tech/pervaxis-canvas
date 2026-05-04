@@ -35,7 +35,7 @@ jobs:
         run: npx nx run-many --target=build --all
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@v8
         with:
           args: >
             -Dsonar.qualitygate.wait=false

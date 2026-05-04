@@ -41,7 +41,7 @@ jobs:
 
       - name: SonarCloud Scan (PRs to develop — informational)
         if: github.base_ref == 'develop'
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@v8
         with:
           args: >
             -Dsonar.qualitygate.wait=false
@@ -55,7 +55,7 @@ jobs:
 
       - name: SonarCloud Scan (PRs to main — quality gate enforced)
         if: github.base_ref == 'main'
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@v8
         with:
           args: >
             -Dsonar.qualitygate.wait=true
