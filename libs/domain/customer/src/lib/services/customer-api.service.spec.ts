@@ -19,6 +19,7 @@
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { CustomerApiService } from './customer-api.service';
 import { Customer, CustomerListItem, CustomerPage } from '../models/customer.model';
 
@@ -95,12 +96,10 @@ describe('CustomerApiService', () => {
       req.flush(MOCK_PAGE);
     });
 
-    it('returns the CustomerPage response', (done) => {
-      service.list().subscribe(result => {
-        expect(result).toEqual(MOCK_PAGE);
-        done();
-      });
+    it('returns the CustomerPage response', async () => {
+      const resultPromise = firstValueFrom(service.list());
       http.expectOne('/api/customers').flush(MOCK_PAGE);
+      expect(await resultPromise).toEqual(MOCK_PAGE);
     });
   });
 
@@ -112,12 +111,10 @@ describe('CustomerApiService', () => {
       req.flush(MOCK_CUSTOMER);
     });
 
-    it('returns the Customer response', (done) => {
-      service.getById('c1').subscribe(result => {
-        expect(result).toEqual(MOCK_CUSTOMER);
-        done();
-      });
+    it('returns the Customer response', async () => {
+      const resultPromise = firstValueFrom(service.getById('c1'));
       http.expectOne('/api/customers/c1').flush(MOCK_CUSTOMER);
+      expect(await resultPromise).toEqual(MOCK_CUSTOMER);
     });
   });
 
