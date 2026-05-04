@@ -42,8 +42,8 @@ export const appConfig: ApplicationConfig = {
       availableLangs: ['en'],
       defaultLang: 'en',
       fallbackLang: 'en',
-      assetsPath: '/assets/i18n/',
+      translationsPath: '/assets/i18n',
     }),
-    provideMfeBootstrap({ mfeName: 'products-mfe' }),
+    provideMfeBootstrap({ name: 'products-mfe' }),
   ],
 };

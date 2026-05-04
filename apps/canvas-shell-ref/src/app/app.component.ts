@@ -58,18 +58,18 @@ export class AppComponent implements OnInit {
 
   /** Static nav items always shown in the sidebar. */
   readonly navItems: NavItem[] = [
-    { label: 'Dashboard', path: '/dashboard', icon: 'home' },
-    { label: 'Settings', path: '/settings', icon: 'settings' },
+    { id: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: 'home' },
+    { id: 'settings', label: 'Settings', path: '/settings', icon: 'settings' },
   ];
 
   ngOnInit(): void {
-    // Register MFE routes from both the legacy manifest loader and the new registry client.
-    const manifests = [
-      ...this.#manifestLoader.manifests(),
-      ...this.#registryClient.remotes(),
-    ];
-    if (manifests.length > 0) {
-      this.#routing.registerMfeRoutes(manifests);
+    // ShellRoutingService reads from RemoteManifestLoader internally.
+    // Registry remotes are loaded in parallel during app init via APP_INITIALIZER.
+    const hasRemotes =
+      this.#manifestLoader.manifests().length > 0 ||
+      this.#registryClient.remotes().length > 0;
+    if (hasRemotes) {
+      this.#routing.registerMfeRoutes();
     }
   }
 }

@@ -82,7 +82,7 @@ export class SettingsPage {
 
   onLocaleChange(value: Record<string, unknown>): void {
     const lang = value['lang'] as string;
-    if (lang) this.#locale.setLocale(lang);
+    if (lang) this.#locale.setLang(lang);
   }
 
   logout(): void {

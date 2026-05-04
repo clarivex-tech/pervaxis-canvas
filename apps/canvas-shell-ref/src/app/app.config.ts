@@ -77,12 +77,12 @@ export const appConfig: ApplicationConfig = {
 
     // Platform services
     provideCanvasState(),
-    provideCanvasError({ logToConsole: true }),
+    provideCanvasError({ enableConsoleLog: true }),
     provideCanvasI18n({
       availableLangs: ['en', 'fr', 'de'],
       defaultLang: 'en',
       fallbackLang: 'en',
-      assetsPath: '/assets/i18n/',
+      translationsPath: '/assets/i18n',
     }),
   ],
 };

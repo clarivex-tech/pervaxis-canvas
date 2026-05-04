@@ -16,7 +16,7 @@
  ************************************************************************
  */
 
-import { ChangeDetectionStrategy, Component, inject, signal, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PageComponent, SectionComponent, DataViewComponent } from '@pervaxis/canvas-components-web';
 import { AuthContextService } from '@pervaxis/canvas-platform-auth';
@@ -72,7 +72,7 @@ export class DashboardPage {
   readonly #registry = inject(RegistryClientService);
   readonly #manifest = inject(RemoteManifestLoader);
 
-  readonly userId = computed(() => this.#auth.userId());
+  readonly userId = computed(() => this.#auth.context()?.userId ?? 'anonymous');
   readonly roles = computed(() => this.#auth.roles());
 
   /** Combined list from registry client + legacy manifest loader. */

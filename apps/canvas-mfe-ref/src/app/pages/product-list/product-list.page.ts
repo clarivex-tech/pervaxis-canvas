@@ -18,7 +18,7 @@
 
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { ColDef } from 'ag-grid-angular';
+import { ColDef, ValueFormatterParams, CellClickedEvent } from 'ag-grid-community';
 import {
   PageComponent,
   SectionComponent,
@@ -72,7 +72,7 @@ export class ProductListPage implements OnInit {
       field: 'price',
       headerName: 'Price',
       flex: 1,
-      valueFormatter: (p) => `$${(p.value as number).toFixed(2)}`,
+      valueFormatter: (p: ValueFormatterParams<Product>) => `$${(p.value as number).toFixed(2)}`,
     },
     {
       field: 'status',
@@ -87,7 +87,7 @@ export class ProductListPage implements OnInit {
       headerName: 'Actions',
       flex: 1,
       cellRenderer: () => '<a class="grid-link">View →</a>',
-      onCellClicked: (e) => {
+      onCellClicked: (e: CellClickedEvent<Product>) => {
         const id = (e.data as Product).id;
         void this.#router.navigate([id], { relativeTo: null });
       },

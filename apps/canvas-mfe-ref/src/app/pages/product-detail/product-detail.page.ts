@@ -19,7 +19,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { PageComponent, SectionComponent, FormEngineComponent, FormSchema } from '@pervaxis/canvas-components-web';
-import { HasPermissionDirective } from '@pervaxis/canvas-platform-auth';
 
 /**
  * Product detail page — demonstrates `FormEngineComponent` for edit flows
@@ -29,7 +28,7 @@ import { HasPermissionDirective } from '@pervaxis/canvas-platform-auth';
   selector: 'app-product-detail',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PageComponent, SectionComponent, FormEngineComponent, HasPermissionDirective],
+  imports: [PageComponent, SectionComponent, FormEngineComponent],
   template: `
     <canvas-page [title]="'Product: ' + id()" subtitle="View and edit product details">
       <button canvas-page-actions class="btn-secondary" (click)="goBack()">
@@ -73,8 +72,8 @@ export class ProductDetailPage implements OnInit {
 
   readonly productSchema: FormSchema = {
     fields: [
-      { key: 'name', type: 'input', label: 'Product Name', required: true },
-      { key: 'price', type: 'number', label: 'Price (USD)', required: true },
+      { key: 'name', type: 'text', label: 'Product Name', validation: { required: true } },
+      { key: 'price', type: 'number', label: 'Price (USD)', validation: { required: true } },
       {
         key: 'status',
         type: 'select',
