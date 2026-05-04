@@ -53,7 +53,7 @@ jobs:
         run: ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: canvas-mobile-ref-debug
           path: apps/canvas-mobile-ref/android/app/build/outputs/apk/debug/*.apk
