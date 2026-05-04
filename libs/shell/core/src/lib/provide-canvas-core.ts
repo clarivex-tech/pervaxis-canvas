@@ -22,6 +22,7 @@ import { CANVAS_CONFIG_URL } from './config/canvas-runtime-config';
 import { EnvironmentConfigService } from './config/environment-config.service';
 import { appInitializerFactory } from './initializer/app-initializer.factory';
 import { RemoteManifestLoader } from './manifest/remote-manifest-loader.service';
+import { RegistryClientService } from './registry/registry-client.service';
 
 /** Configuration options for `provideCanvasCore()`. */
 export interface CanvasCoreConfig {
@@ -54,6 +55,7 @@ export function provideCanvasCore(config?: CanvasCoreConfig): EnvironmentProvide
     provideHttpClient(withFetch()),
     EnvironmentConfigService,
     RemoteManifestLoader,
+    RegistryClientService,
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFactory,

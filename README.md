@@ -47,7 +47,48 @@ Canvas is not an application. It is a set of Angular libraries with a strict bou
 
 ---
 
-## Commands
+## Local Development Setup
+
+### 1. Install dependencies
+
+```bash
+npm install
+npx playwright install   # Browser binaries for E2E (one-time)
+```
+
+### 2. Start backing services
+
+```bash
+docker compose up -d
+```
+
+| Service | URL | Purpose |
+|---|---|---|
+| Keycloak | http://localhost:8080 | OIDC identity provider (admin / admin) |
+| Canvas Registry | http://localhost:3100 | MFE registry API mock |
+| Mock API | http://localhost:3000 | json-server backend stubs |
+
+**First-time only:** Create a dev user in the Keycloak `canvas` realm.
+See `documents/canvas/localstack-guide.md` for the full setup walkthrough.
+
+### 3. Serve the reference apps
+
+```bash
+nx serve canvas-shell-ref     # Shell host   → http://localhost:4200
+nx serve canvas-mfe-ref       # MFE remote   → http://localhost:4201
+nx serve canvas-mobile-ref    # Mobile app   → http://localhost:4202
+```
+
+### 4. Run E2E tests
+
+```bash
+npm run e2e          # Headless Playwright
+nx run canvas-shell-e2e:e2e-ui    # Playwright interactive UI
+```
+
+---
+
+## Library Commands
 
 ```bash
 # Install dependencies
@@ -81,29 +122,25 @@ nx g @nx/angular:library --name=canvas-{name} --directory=libs/{category}
 
 ```
 pervaxis-canvas/
+├── apps/
+│   ├── canvas-shell-ref/     Shell host reference app (port 4200)
+│   ├── canvas-mfe-ref/       Products MFE remote (port 4201)
+│   └── canvas-mobile-ref/    Ionic mobile reference app (port 4202)
+├── e2e/
+│   └── canvas-shell-e2e/     Playwright E2E test suite
 ├── libs/
-│   ├── platform/
-│   │   ├── canvas-platform-http/
-│   │   ├── canvas-platform-auth/
-│   │   ├── canvas-platform-state/
-│   │   ├── canvas-platform-error/
-│   │   └── canvas-platform-i18n/
-│   ├── shell/
-│   │   ├── canvas-shell-core/
-│   │   ├── canvas-shell-routing/
-│   │   ├── canvas-shell-auth/
-│   │   └── canvas-shell-layout/
-│   ├── mfe/
-│   │   ├── canvas-mfe-bootstrap/
-│   │   ├── canvas-mfe-contracts/
-│   │   └── canvas-mfe-testing/
-│   └── components/
-│       ├── canvas-components-web/
-│       └── canvas-components-mobile/
+│   ├── platform/             canvas-platform-{http,auth,state,error,i18n}
+│   ├── shell/                canvas-shell-{core,routing,auth,layout}
+│   ├── mfe/                  canvas-mfe-{bootstrap,contracts,testing}
+│   └── components/           canvas-components-{web,mobile}
+├── documents/canvas/         Blueprint, specs, guides, OpenAPI specs, Docker data
+├── docker-compose.yml        OIDC + registry + API dev stack
 ├── .github/workflows/
-│   ├── pr-check.yml       # Lint · Test · Build · SonarCloud on PRs to main
-│   ├── deploy.yml         # Branch tracking on main and develop
-│   └── publish.yml        # npm publish on version tags
+│   ├── pr-check.yml          Lint · Test · Build · SonarCloud on PRs
+│   ├── deploy.yml            Branch tracking on main and develop
+│   ├── publish.yml           npm publish on version tags
+│   ├── ios.yml               iOS Capacitor build
+│   └── android.yml           Android Capacitor build
 ├── nx.json
 ├── tsconfig.base.json
 └── sonar-project.properties

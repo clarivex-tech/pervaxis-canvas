@@ -1,0 +1,12 @@
+/* Canvas MFE — global styles (inherits shell tokens via shared host context) */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  color: var(--canvas-color-text, #1e293b);
+}

@@ -1,0 +1,9 @@
+[
+  {
+    "name": "demo-mfe",
+    "remoteEntry": "http://localhost:4201/remoteEntry.json",
+    "exposedModule": "./Module",
+    "routePath": "demo",
+    "permissions": []
+  }
+]

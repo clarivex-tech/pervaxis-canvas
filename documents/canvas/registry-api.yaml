@@ -1,0 +1,203 @@
+openapi: 3.0.3
+info:
+  title: Pervaxis Canvas Registry API
+  description: |
+    Central runtime registry that tells each Canvas shell which MFE remotes to load.
+    Each customer has an isolated namespace of remotes. The shell calls `GET /api/registry/{customerId}/remotes`
+    on bootstrap to discover which MFEs to mount.
+  version: 1.0.0
+  contact:
+    name: Clarivex Technologies
+    url: https://clarivex.tech
+
+servers:
+  - url: https://registry.pervaxis.io
+    description: Production
+  - url: http://localhost:3100
+    description: Local development / LocalStack
+
+tags:
+  - name: remotes
+    description: MFE remote registry management
+
+paths:
+  /api/registry/{customerId}/remotes:
+    get:
+      summary: List registered MFE remotes for a customer
+      description: |
+        Returns the full list of Module Federation remotes registered for the given customer.
+        Called by the Canvas shell on bootstrap. Falls back to `/assets/registry.json` when unavailable.
+      operationId: listRemotes
+      tags: [remotes]
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+      responses:
+        '200':
+          description: Remotes loaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryResponse'
+              example:
+                customerId: acme-corp
+                remotes:
+                  - name: orders-mfe
+                    remoteEntry: https://cdn.acme.io/orders/remoteEntry.json
+                    exposedModule: ./Module
+                    routePath: orders
+                    permissions: [orders:read]
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/CustomerNotFound'
+
+    post:
+      summary: Register a new MFE remote for a customer
+      description: |
+        Adds a new Module Federation remote to the customer's registry.
+        If a remote with the same `name` already exists it is replaced.
+        Typically called by Pervaxis Forge during print generation.
+      operationId: registerRemote
+      tags: [remotes]
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfeManifest'
+      responses:
+        '201':
+          description: Remote registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MfeManifest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/registry/{customerId}/remotes/{name}:
+    delete:
+      summary: Remove a registered MFE remote for a customer
+      description: Unregisters the named MFE remote from the customer's registry.
+      operationId: unregisterRemote
+      tags: [remotes]
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - name: name
+          in: path
+          required: true
+          description: Logical name of the MFE remote to remove.
+          schema:
+            type: string
+            example: orders-mfe
+      responses:
+        '204':
+          description: Remote removed
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/RemoteNotFound'
+
+components:
+  parameters:
+    customerId:
+      name: customerId
+      in: path
+      required: true
+      description: Customer identifier (slug or UUID) that scopes the remote registry.
+      schema:
+        type: string
+        example: acme-corp
+
+  schemas:
+    MfeManifest:
+      type: object
+      required: [name, remoteEntry, exposedModule, routePath]
+      properties:
+        name:
+          type: string
+          description: Unique logical name for the remote (matches federation.config key).
+          example: orders-mfe
+        remoteEntry:
+          type: string
+          format: uri
+          description: URL to the remote's remoteEntry.json.
+          example: https://cdn.acme.io/orders/remoteEntry.json
+        exposedModule:
+          type: string
+          description: Exposed module path.
+          example: ./Module
+        routePath:
+          type: string
+          description: Route path the shell will mount this remote at.
+          example: orders
+        permissions:
+          type: array
+          items:
+            type: string
+          description: Permission codes required to access this remote. Empty means public.
+          example: [orders:read]
+
+    RegistryResponse:
+      type: object
+      required: [customerId, remotes]
+      properties:
+        customerId:
+          type: string
+          description: The customer this registry belongs to.
+          example: acme-corp
+        remotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MfeManifest'
+          description: All registered MFE remotes for this customer.
+
+    ErrorResponse:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          example: CUSTOMER_NOT_FOUND
+        message:
+          type: string
+          example: No registry found for customer acme-corp
+
+  responses:
+    BadRequest:
+      description: Invalid request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid bearer token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    CustomerNotFound:
+      description: Customer registry not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    RemoteNotFound:
+      description: Named remote not found in the customer's registry
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []

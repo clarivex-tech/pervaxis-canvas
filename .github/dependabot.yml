@@ -1,0 +1,38 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 5
+    target-branch: "develop"
+    labels:
+      - "dependencies"
+      - "automated"
+    groups:
+      angular:
+        patterns: ["@angular/*", "@angular-devkit/*", "zone.js"]
+      nx:
+        patterns: ["@nx/*", "nx"]
+      ngrx:
+        patterns: ["@ngrx/*"]
+      ionic:
+        patterns: ["@ionic/*", "@capacitor/*", "ionicons"]
+      testing:
+        patterns: ["vitest", "@vitest/*", "@analogjs/*", "vite", "@vite/*"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "automated"

@@ -19,22 +19,26 @@
 import { inject } from '@angular/core';
 import { EnvironmentConfigService } from '../config/environment-config.service';
 import { RemoteManifestLoader } from '../manifest/remote-manifest-loader.service';
+import { RegistryClientService } from '../registry/registry-client.service';
 
 /**
  * Factory function for the Canvas `APP_INITIALIZER`.
  *
  * Execution order:
  * 1. `EnvironmentConfigService.load()` — fetches `/assets/config.json`
- * 2. `RemoteManifestLoader.load()` — fetches the MFE registry (skipped when `registryUrl` is absent)
+ * 2. In parallel:
+ *    - `RemoteManifestLoader.load()` — raw URL manifest fetch (legacy/simple)
+ *    - `RegistryClientService.loadRemotes()` — full registry API with caching + retry
  *
  * Registered automatically by `provideCanvasCore()`.
  */
 export function appInitializerFactory(): () => Promise<void> {
   const configService = inject(EnvironmentConfigService);
   const manifestLoader = inject(RemoteManifestLoader);
+  const registryClient = inject(RegistryClientService);
 
   return async () => {
     await configService.load();
-    await manifestLoader.load();
+    await Promise.all([manifestLoader.load(), registryClient.loadRemotes()]);
   };
 }

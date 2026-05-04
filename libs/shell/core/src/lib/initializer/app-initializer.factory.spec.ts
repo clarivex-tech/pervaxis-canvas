@@ -19,20 +19,24 @@
 import { TestBed } from '@angular/core/testing';
 import { EnvironmentConfigService } from '../config/environment-config.service';
 import { RemoteManifestLoader } from '../manifest/remote-manifest-loader.service';
+import { RegistryClientService } from '../registry/registry-client.service';
 import { appInitializerFactory } from './app-initializer.factory';
 
 describe('appInitializerFactory', () => {
   let configLoad: ReturnType<typeof vi.fn>;
   let manifestLoad: ReturnType<typeof vi.fn>;
+  let registryLoad: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     configLoad = vi.fn().mockResolvedValue(undefined);
     manifestLoad = vi.fn().mockResolvedValue(undefined);
+    registryLoad = vi.fn().mockResolvedValue(undefined);
 
     TestBed.configureTestingModule({
       providers: [
         { provide: EnvironmentConfigService, useValue: { load: configLoad } },
         { provide: RemoteManifestLoader, useValue: { load: manifestLoad } },
+        { provide: RegistryClientService, useValue: { loadRemotes: registryLoad } },
       ],
     });
   });
@@ -42,7 +46,7 @@ describe('appInitializerFactory', () => {
     expect(typeof initFn).toBe('function');
   });
 
-  it('calls configService.load() then manifestLoader.load() in sequence', async () => {
+  it('calls configService.load() before manifestLoader and registryClient', async () => {
     const callOrder: string[] = [];
     configLoad.mockImplementation(() => {
       callOrder.push('config');
@@ -52,11 +56,17 @@ describe('appInitializerFactory', () => {
       callOrder.push('manifest');
       return Promise.resolve();
     });
+    registryLoad.mockImplementation(() => {
+      callOrder.push('registry');
+      return Promise.resolve();
+    });
 
     const initFn = TestBed.runInInjectionContext(() => appInitializerFactory());
     await initFn();
 
-    expect(callOrder).toEqual(['config', 'manifest']);
+    expect(callOrder[0]).toBe('config');
+    expect(callOrder).toContain('manifest');
+    expect(callOrder).toContain('registry');
   });
 
   it('calls configService.load() exactly once', async () => {
@@ -71,16 +81,23 @@ describe('appInitializerFactory', () => {
     expect(manifestLoad).toHaveBeenCalledTimes(1);
   });
 
+  it('calls registryClient.loadRemotes() exactly once', async () => {
+    const initFn = TestBed.runInInjectionContext(() => appInitializerFactory());
+    await initFn();
+    expect(registryLoad).toHaveBeenCalledTimes(1);
+  });
+
   it('propagates config load errors', async () => {
     configLoad.mockRejectedValue(new Error('config fetch failed'));
     const initFn = TestBed.runInInjectionContext(() => appInitializerFactory());
     await expect(initFn()).rejects.toThrow('config fetch failed');
   });
 
-  it('does not call manifestLoader.load() if config load fails', async () => {
+  it('does not call manifestLoader or registryClient if config load fails', async () => {
     configLoad.mockRejectedValue(new Error('config fetch failed'));
     const initFn = TestBed.runInInjectionContext(() => appInitializerFactory());
     await expect(initFn()).rejects.toBeDefined();
     expect(manifestLoad).not.toHaveBeenCalled();
+    expect(registryLoad).not.toHaveBeenCalled();
   });
 });

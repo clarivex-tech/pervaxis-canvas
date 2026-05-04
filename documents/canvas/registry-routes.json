@@ -1,0 +1,4 @@
+{
+  "/api/registry/:customerId/remotes": "/remotes",
+  "/api/registry/:customerId/remotes/:id": "/remotes/:id"
+}

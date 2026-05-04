@@ -30,6 +30,16 @@ export interface CanvasRuntimeConfig {
   apiBaseUrl: string;
   /** URL of the MFE registry endpoint. When omitted, manifest loading is skipped. */
   registryUrl?: string;
+  /**
+   * Base URL of the Canvas Registry REST API, e.g. `https://registry.pervaxis.io`.
+   * Required alongside `registryCustomerId` to enable `RegistryClientService`.
+   */
+  registryApiUrl?: string;
+  /**
+   * Customer identifier used as the `{customerId}` path parameter in
+   * `GET /api/registry/{customerId}/remotes`. Required when `registryApiUrl` is set.
+   */
+  registryCustomerId?: string;
   /** OIDC authority/issuer URL (e.g. `https://auth.example.com`). */
   oidcIssuer?: string;
   /** OIDC client ID registered with the identity provider. */

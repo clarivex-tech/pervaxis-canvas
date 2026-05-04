@@ -8,8 +8,8 @@ env:
   NODE_VERSION: '20.x'
 
 jobs:
-  lint-test-build:
-    name: Lint · Test · Build · SonarCloud
+  affected:
+    name: Lint · Test · Build · Typecheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,17 +24,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint
-        run: npx nx run-many --target=lint --all
+      - name: Derive affected base/head SHAs
+        uses: nrwl/nx-set-shas@v4
 
-      - name: Test with coverage
-        run: npx nx run-many --target=test --all --coverage --passWithNoTests
+      - name: Lint affected
+        run: npx nx affected --target=lint
 
-      - name: Build
-        run: npx nx run-many --target=build --all
+      - name: Test affected (with lcov coverage)
+        run: npx nx affected --target=test --coverage --passWithNoTests
 
-      - name: SonarCloud Scan
-        if: github.base_ref == 'main'
+      - name: Build affected
+        run: npx nx affected --target=build
+
+      - name: Typecheck affected
+        run: npx nx affected --target=typecheck
+
+      - name: SonarCloud Scan (PRs to develop — informational)
+        if: github.base_ref == 'develop'
         uses: SonarSource/sonarqube-scan-action@v6
         with:
           args: >
@@ -47,7 +53,22 @@ jobs:
           SONAR_HOST_URL: https://sonarcloud.io
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/upload-artifact@v4
+      - name: SonarCloud Scan (PRs to main — quality gate enforced)
+        if: github.base_ref == 'main'
+        uses: SonarSource/sonarqube-scan-action@v6
+        with:
+          args: >
+            -Dsonar.qualitygate.wait=true
+            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+            -Dsonar.pullrequest.branch=${{ github.head_ref }}
+            -Dsonar.pullrequest.base=${{ github.base_ref }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: pr-coverage-${{ github.run_id }}

@@ -1,0 +1,7 @@
+{
+  "products": [
+    { "id": "1", "name": "Canvas Framework", "price": 0, "status": "active", "description": "Angular platform framework library." },
+    { "id": "2", "name": "Pervaxis Platform", "price": 0, "status": "active", "description": "End-to-end web and mobile platform." },
+    { "id": "3", "name": "Forge CLI", "price": 0, "status": "draft", "description": "Code generation CLI for Canvas prints." }
+  ]
+}
