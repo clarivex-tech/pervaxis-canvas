@@ -17,11 +17,11 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Pipe, PipeTransform, signal } from '@angular/core';
+import { Component, Input, Pipe, PipeTransform, signal } from '@angular/core';
 import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { PageComponent, SectionComponent } from '@pervaxis/canvas-components-web';
-import { HasPermissionDirective, AuthContextService } from '@pervaxis/canvas-platform-auth';
+import { AuthContextService } from '@pervaxis/canvas-platform-auth';
 import { CustomerDetailPage } from './customer-detail.page';
 import { CustomerStore } from '../../state/customer.store';
 import { Customer } from '../../models/customer.model';
@@ -32,10 +32,14 @@ class MockTranslocoPipe implements PipeTransform {
 }
 
 @Component({ selector: 'canvas-page', template: '<ng-content />', standalone: true })
-class StubPageComponent {}
+class StubPageComponent {
+  @Input() title = '';
+}
 
 @Component({ selector: 'canvas-section', template: '<ng-content />', standalone: true })
-class StubSectionComponent {}
+class StubSectionComponent {
+  @Input() title = '';
+}
 
 const MOCK_CUSTOMER: Customer = {
   id: 'c1', code: 'CUST-001', name: 'Acme', email: 'a@test.com',
@@ -74,7 +78,7 @@ describe('CustomerDetailPage', () => {
     })
       .overrideComponent(CustomerDetailPage, {
         remove: {
-          imports: [TranslocoPipe, HasPermissionDirective, PageComponent, SectionComponent],
+          imports: [TranslocoPipe, PageComponent, SectionComponent],
         },
         add: {
           imports: [MockTranslocoPipe, StubPageComponent, StubSectionComponent],

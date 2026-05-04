@@ -17,7 +17,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Pipe, PipeTransform, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, Pipe, PipeTransform, signal } from '@angular/core';
 import { provideRouter, Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import {
@@ -25,12 +25,11 @@ import {
   DataViewComponent,
   PageComponent,
 } from '@pervaxis/canvas-components-web';
-import { HasPermissionDirective } from '@pervaxis/canvas-platform-auth';
+import { AuthContextService } from '@pervaxis/canvas-platform-auth';
 import { RowClickedEvent } from 'ag-grid-community';
 import { CustomerListPage } from './customer-list.page';
 import { CustomerStore } from '../../state/customer.store';
 import { CustomerListItem } from '../../models/customer.model';
-import { AuthContextService } from '@pervaxis/canvas-platform-auth';
 
 @Pipe({ name: 'transloco', standalone: true, pure: true })
 class MockTranslocoPipe implements PipeTransform {
@@ -38,13 +37,26 @@ class MockTranslocoPipe implements PipeTransform {
 }
 
 @Component({ selector: 'canvas-page', template: '<ng-content />', standalone: true })
-class StubPageComponent {}
+class StubPageComponent {
+  @Input() title = '';
+  @Input() subtitle = '';
+}
 
 @Component({ selector: 'canvas-data-view', template: '<ng-content />', standalone: true })
-class StubDataViewComponent {}
+class StubDataViewComponent {
+  @Input() loading = false;
+  @Input() empty = false;
+  @Input() emptyText = '';
+}
 
 @Component({ selector: 'canvas-grid', template: '', standalone: true })
-class StubCanvasGridComponent {}
+class StubCanvasGridComponent {
+  @Input() rowData: unknown[] = [];
+  @Input() columnDefs: unknown[] = [];
+  @Input() pagination = false;
+  @Input() paginationPageSize = 0;
+  @Output() rowClicked = new EventEmitter<unknown>();
+}
 
 const MOCK_ITEM: CustomerListItem = {
   id: 'c1',
@@ -85,7 +97,6 @@ describe('CustomerListPage', () => {
         remove: {
           imports: [
             TranslocoPipe,
-            HasPermissionDirective,
             PageComponent,
             DataViewComponent,
             CanvasGridComponent,

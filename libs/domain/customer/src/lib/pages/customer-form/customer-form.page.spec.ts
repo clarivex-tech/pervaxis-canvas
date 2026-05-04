@@ -17,7 +17,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Pipe, PipeTransform, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, Pipe, PipeTransform, signal } from '@angular/core';
 import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { FormEngineComponent, PageComponent } from '@pervaxis/canvas-components-web';
@@ -31,10 +31,16 @@ class MockTranslocoPipe implements PipeTransform {
 }
 
 @Component({ selector: 'canvas-page', template: '<ng-content />', standalone: true })
-class StubPageComponent {}
+class StubPageComponent {
+  @Input() title = '';
+}
 
 @Component({ selector: 'canvas-form-engine', template: '', standalone: true })
-class StubFormEngineComponent {}
+class StubFormEngineComponent {
+  @Input() schema: unknown = null;
+  @Input() submitLabel = '';
+  @Output() formSubmit = new EventEmitter<unknown>();
+}
 
 const MOCK_CUSTOMER: Customer = {
   id: 'c1', code: 'CUST-001', name: 'Acme', email: 'a@test.com',
