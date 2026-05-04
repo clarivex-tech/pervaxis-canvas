@@ -40,6 +40,10 @@ export default [
               onlyDependOnLibsWithTags: ['scope:contracts', 'scope:platform'],
             },
             {
+              sourceTag: 'scope:domain',
+              onlyDependOnLibsWithTags: ['scope:contracts', 'scope:platform', 'scope:components'],
+            },
+            {
               sourceTag: 'scope:components',
               onlyDependOnLibsWithTags: ['scope:contracts'],
             },
