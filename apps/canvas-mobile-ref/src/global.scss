@@ -1,0 +1,13 @@
+/* Core Ionic styles */
+@import '@ionic/angular/css/core.css';
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+@import '@ionic/angular/css/display.css';
+
+/* Canvas mobile design tokens */
+:root {
+  --canvas-mobile-safe-area-top: env(safe-area-inset-top);
+  --canvas-mobile-safe-area-bottom: env(safe-area-inset-bottom);
+  --canvas-color-primary: var(--ion-color-primary, #2563eb);
+}

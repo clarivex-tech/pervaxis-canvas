@@ -16,12 +16,24 @@
  ************************************************************************
  */
 
-export { AuthContextService } from './lib/auth-context/auth-context.service';
-export { HasPermissionDirective } from './lib/directives/has-permission.directive';
-export { HasRoleDirective } from './lib/directives/has-role.directive';
-export { authGuard } from './lib/guards/auth.guard';
-export { permissionGuard } from './lib/guards/permission.guard';
+import { Routes } from '@angular/router';
 
-// Token storage
-export { CANVAS_TOKEN_STORAGE, provideCapacitorTokenStorage } from './lib/storage/token-storage.service';
-export type { CanvasTokenStorage } from './lib/storage/token-storage.service';
+export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./pages/home/home.page').then((m) => m.HomePage),
+    data: { breadcrumb: 'Home' },
+  },
+  {
+    path: 'auth',
+    loadComponent: () =>
+      import('./pages/auth/login.page').then((m) => m.LoginPage),
+    data: { breadcrumb: 'Login' },
+  },
+];

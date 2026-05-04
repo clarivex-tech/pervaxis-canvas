@@ -4,6 +4,10 @@
   "peerDependencies": {
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0",
+    "@angular/router": "^21.0.0",
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/push-notifications": "^6.0.0",
     "@pervaxis/canvas-mfe-contracts": "^0.0.1",
     "rxjs": "^7.0.0"
   },

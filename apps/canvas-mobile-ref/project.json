@@ -1,0 +1,78 @@
+{
+  "name": "canvas-mobile-ref",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/canvas-mobile-ref/src",
+  "prefix": "app",
+  "tags": ["type:app", "scope:mobile"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/canvas-mobile-ref",
+        "index": "apps/canvas-mobile-ref/src/index.html",
+        "browser": "apps/canvas-mobile-ref/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/canvas-mobile-ref/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/canvas-mobile-ref/src/assets",
+            "output": "assets"
+          }
+        ],
+        "styles": ["apps/canvas-mobile-ref/src/global.scss"],
+        "scripts": [],
+        "stylePreprocessorOptions": {
+          "includePaths": ["node_modules/"]
+        }
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "sourceMap": false,
+          "namedChunks": false,
+          "aot": true,
+          "extractLicenses": true,
+          "budgets": [
+            { "type": "initial", "maximumWarning": "2mb", "maximumError": "5mb" },
+            { "type": "anyComponentStyle", "maximumWarning": "6kb", "maximumError": "10kb" }
+          ]
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular/build:dev-server",
+      "configurations": {
+        "production": { "buildTarget": "canvas-mobile-ref:build:production" },
+        "development": { "buildTarget": "canvas-mobile-ref:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{workspaceRoot}/coverage/apps/canvas-mobile-ref"],
+      "options": {
+        "configFile": "apps/canvas-mobile-ref/vite.config.mts",
+        "reportsDirectory": "../../coverage/apps/canvas-mobile-ref"
+      }
+    },
+    "cap-sync": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx cap sync",
+        "cwd": "apps/canvas-mobile-ref"
+      }
+    }
+  }
+}

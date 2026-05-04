@@ -33,3 +33,14 @@ export { buildFederationManifest } from './lib/federation/federation-bootstrap';
 
 // Initializer (exported for advanced composition)
 export { appInitializerFactory } from './lib/initializer/app-initializer.factory';
+
+// Mobile platform detection
+export { MobilePlatformService } from './lib/platform/mobile-platform.service';
+export type { NativePlatform } from './lib/platform/mobile-platform.service';
+
+// Push notifications
+export { PushNotificationService } from './lib/notifications/push-notification.service';
+export type { CanvasPushNotification, PushPermissionState } from './lib/notifications/push-notification.service';
+
+// Deep linking
+export { DeepLinkService } from './lib/deep-link/deep-link.service';

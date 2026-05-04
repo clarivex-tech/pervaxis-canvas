@@ -26,5 +26,9 @@ export type { CanvasAuthConfig } from './lib/config/canvas-auth-config';
 // Service
 export { ShellAuthService } from './lib/services/shell-auth.service';
 
+// Capacitor OIDC
+export { CapacitorOidcService, CANVAS_BROWSER_OPEN } from './lib/services/capacitor-oidc.service';
+export type { BrowserOpenFn } from './lib/services/capacitor-oidc.service';
+
 // Interceptor
 export { jwtInterceptor } from './lib/interceptors/jwt.interceptor';

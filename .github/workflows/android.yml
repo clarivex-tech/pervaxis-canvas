@@ -1,0 +1,60 @@
+name: Android Build
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  android-build:
+    name: Android Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build canvas-mobile-ref (web assets)
+        run: npx nx build canvas-mobile-ref --configuration=production
+
+      - name: Install Capacitor CLI
+        run: npm install -g @capacitor/cli
+
+      - name: Install Capacitor Android platform
+        run: npm install @capacitor/android@^6.0.0 --legacy-peer-deps
+
+      - name: Capacitor sync (Android)
+        working-directory: apps/canvas-mobile-ref
+        run: |
+          npx cap add android || true
+          npx cap sync android
+
+      - name: Build Android (debug)
+        working-directory: apps/canvas-mobile-ref/android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: canvas-mobile-ref-debug
+          path: apps/canvas-mobile-ref/android/app/build/outputs/apk/debug/*.apk
+          retention-days: 7

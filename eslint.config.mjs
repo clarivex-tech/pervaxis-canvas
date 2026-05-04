@@ -43,6 +43,16 @@ export default [
               sourceTag: 'scope:components',
               onlyDependOnLibsWithTags: ['scope:contracts'],
             },
+            {
+              sourceTag: 'type:app',
+              onlyDependOnLibsWithTags: [
+                'scope:contracts',
+                'scope:platform',
+                'scope:shell',
+                'scope:mfe',
+                'scope:components',
+              ],
+            },
           ],
         },
       ],
