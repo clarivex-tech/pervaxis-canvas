@@ -240,3 +240,205 @@ Nx caches the project graph on disk. A freshly generated library's `vite.config.
 **Command:** `npx nx reset`
 
 **Applies to:** Every new library generation in this workspace, specifically before the first `nx test` or `nx lint` run.
+
+---
+
+## L011 — `vi.mock()` cannot intercept dynamic `await import()` inside component methods
+
+**Date:** 2026-05-03
+**Phase:** Phase 5 — `canvas-components-web` (ECharts)
+**Rule:** Never rely on `vi.mock('some-module')` to intercept a dynamic `await import('some-module')` call inside an async component method. Use a DI token instead so tests can inject a mock factory.
+
+**Why:**
+`vi.mock()` hoists to the top of the test file and intercepts static ES module imports. It does **not** intercept `await import(...)` calls that happen inside async functions at runtime — those execute after the module graph is already resolved. The component's `ngOnInit` called `await import('echarts')` at runtime, which bypassed the mock entirely.
+
+**Pattern:**
+```typescript
+// Define a DI token
+export const ECHARTS_INIT = new InjectionToken<typeof import('echarts').init>('ECHARTS_INIT');
+
+// Component uses the token
+const init = inject(ECHARTS_INIT);
+
+// Tests provide a mock via the token — no vi.mock() needed
+{ provide: ECHARTS_INIT, useValue: mockInitFn }
+```
+
+**Applies to:** Any component that lazy-loads a heavy library via dynamic import (ECharts, ag-Grid, etc.).
+
+---
+
+## L012 — `vi.fn().mockImplementation()` returns a non-constructable function — use `function Stub()` for class polyfills
+
+**Date:** 2026-05-03
+**Phase:** Phase 5 — `canvas-components-web`
+**Rule:** When polyfilling a browser constructor (e.g. `ResizeObserver`) in tests, define it as a plain `function Stub() {}` with methods on its prototype. Never use `vi.fn()` — arrow functions and `vi.fn()` return values cannot be called with `new`.
+
+**Why:**
+`vi.fn()` wraps the mock in an arrow function under the hood. Arrow functions do not have a `prototype` property in the way regular functions do, so `new vi.fn()` throws `TypeError: X is not a constructor`.
+
+**Pattern:**
+```typescript
+function ResizeObserverStub(cb: ResizeObserverCallback) { this._cb = cb; }
+ResizeObserverStub.prototype.observe = vi.fn();
+ResizeObserverStub.prototype.unobserve = vi.fn();
+ResizeObserverStub.prototype.disconnect = vi.fn();
+(globalThis as any).ResizeObserver = ResizeObserverStub;
+```
+
+**Applies to:** Any test that needs a constructor polyfill for a browser API not available in jsdom.
+
+---
+
+## L013 — `@ionic/core` CJS/ESM hybrid requires explicit inlining in both `server.deps` and `deps` in Vitest config
+
+**Date:** 2026-05-03
+**Phase:** Phase 5 — `canvas-components-mobile`
+**Rule:** When testing any library that imports from `@ionic/core` or `@ionic/angular`, configure **both** `test.server.deps.inline` and `test.deps.inline` to include all `@ionic/*` and `@capacitor/*` packages.
+
+**Why:**
+`@ionic/core` ships as a CJS package that contains ESM files internally (a hybrid format). Vitest's default module resolver cannot handle this combination in the jsdom environment — it fails with `SyntaxError: Cannot use import statement in a CommonJS module`. Inlining forces Vitest to bundle and transform the package through its own pipeline instead of Node's native require.
+
+**Config to add:**
+```typescript
+test: {
+  server: { deps: { inline: ['@ionic/core', '@ionic/angular', /@ionic/, '@capacitor/core', /@capacitor/] } },
+  deps:   { inline: [/@ionic/, /@capacitor/] },
+}
+```
+
+**Applies to:** Every library that imports Ionic or Capacitor packages in its source or tests.
+
+---
+
+## L014 — Use `@nx/vitest:test` executor, not the deprecated `@nx/vite:test`
+
+**Date:** 2026-05-03
+**Phase:** Phase 5 — `canvas-components-mobile`
+**Rule:** Always generate new libraries with the `@nx/vitest:test` executor. If an existing library uses `@nx/vite:test`, migrate it.
+
+**Why:**
+`@nx/vite:test` is deprecated and will be removed in Nx 23. CI prints a deprecation warning on every run. The replacement `@nx/vitest:test` is a drop-in change in `project.json` — the options are identical.
+
+**Migration:**
+```json
+// project.json — change executor only
+"test": {
+  "executor": "@nx/vitest:test"
+}
+```
+
+---
+
+## L015 — Capacitor plugin packages must be listed in `peerDependencies` of any library that imports them
+
+**Date:** 2026-05-03
+**Phase:** Phase 6 — Mobile integration
+**Rule:** Whenever a Canvas library imports from `@capacitor/core`, `@capacitor/network`, `@capacitor/preferences`, `@capacitor/app`, or `@capacitor/push-notifications`, those packages must be listed in `peerDependencies` in the library's `package.json`.
+
+**Why:**
+The `@nx/dependency-checks` ESLint rule inspects all source imports and cross-references them against `peerDependencies`. Capacitor packages are external runtime dependencies — they must be declared as peer deps, not assumed to be provided by the workspace. Omitting them produces a lint error that blocks CI.
+
+**Applies to:** `canvas-platform-auth`, `canvas-platform-http`, `canvas-shell-core`, `canvas-shell-auth`, and any future library that integrates with Capacitor.
+
+---
+
+## L016 — Nx apps need an explicit `type:app` depConstraint in `eslint.config.mjs` to import libraries
+
+**Date:** 2026-05-03
+**Phase:** Phase 6 — `canvas-mobile-ref`
+**Rule:** When adding an Nx application to the workspace, always add a matching `sourceTag: 'type:app'` entry to the `depConstraints` array in the root `eslint.config.mjs`. Without it, the `@nx/enforce-module-boundaries` rule blocks all library imports from that app.
+
+**Why:**
+`@nx/enforce-module-boundaries` evaluates every import against the `depConstraints` array. If none of the project's tags match any `sourceTag` in the config, the rule applies the default deny-all policy — the project cannot import from any library. The app's `project.json` had `"tags": ["type:app", "scope:mobile"]` but neither tag had a matching `sourceTag` constraint in `eslint.config.mjs`.
+
+**Entry to add:**
+```javascript
+{
+  sourceTag: 'type:app',
+  onlyDependOnLibsWithTags: ['scope:contracts', 'scope:platform', 'scope:shell', 'scope:mfe', 'scope:components'],
+}
+```
+
+**Applies to:** Every application added to this workspace.
+
+---
+
+## L017 — `@capacitor/android` and `@capacitor/ios` are not workspace dependencies — install them explicitly in CI before `cap sync`
+
+**Date:** 2026-05-03
+**Phase:** Phase 6 — Android/iOS CI
+**Rule:** In CI workflows that run `npx cap sync android` or `npx cap sync ios`, add an explicit `npm install @capacitor/android@^6.0.0` / `npm install @capacitor/ios@^6.0.0 --legacy-peer-deps` step **before** the `cap add`/`cap sync` step.
+
+**Why:**
+`npx cap sync` requires the platform package to be installed in `node_modules`. These packages are intentionally excluded from the root `package.json` because they are native artifacts, not consumed by the Angular build. The CI runner's `npm ci` does not install them. Without a prior `npm install`, `cap add android` exits with "Could not find the android platform."
+
+**Version pinning:** Pin to the same major version as `@capacitor/core` in the workspace. Installing without a version specifier fetches the latest (v8 at time of writing), which requires `@capacitor/core@^8` and breaks the peer dependency resolution if the workspace is on v6.
+
+---
+
+## L018 — Capacitor 6 Android requires Java 21 — not Java 17
+
+**Date:** 2026-05-03
+**Phase:** Phase 6 — Android CI
+**Rule:** Set `java-version: '21'` in the `actions/setup-java` step for any CI workflow that runs an Android Gradle build against a Capacitor 6 project.
+
+**Why:**
+The Android project generated by `npx cap add android` with Capacitor 6 sets `sourceCompatibility = JavaVersion.VERSION_21` in the Gradle build files. Compiling with Java 17 (the previous default) causes Gradle to exit with `error: invalid source release: 21`.
+
+---
+
+## L019 — `xcpretty` is not pre-installed on macOS GitHub runners — install it explicitly
+
+**Date:** 2026-05-03
+**Phase:** Phase 6 — iOS CI
+**Rule:** Add `gem install xcpretty` as an explicit CI step before any `xcodebuild ... | xcpretty` command. Do not rely on `bundler-cache: true` unless a `Gemfile` exists in the working directory.
+
+**Why:**
+The macOS GitHub runner does not have `xcpretty` pre-installed. `bundler-cache: true` on `ruby/setup-ruby` only installs gems from a `Gemfile` — without one it is a no-op. Running `xcodebuild | xcpretty` with `xcpretty` absent causes the pipe to fail immediately with exit code 127 (command not found). Also use `set -o pipefail` so the pipeline's exit code reflects xcodebuild's result, not xcpretty's.
+
+---
+
+## L020 — Vitest exits with code 1 when no test files are found — add `passWithNoTests: true` for app projects
+
+**Date:** 2026-05-03
+**Phase:** Phase 6 — `canvas-mobile-ref`
+**Rule:** Add `passWithNoTests: true` to the `test` config in `vite.config.mts` for any Nx application project that does not have unit test files.
+
+**Why:**
+Vitest exits with a non-zero exit code by default when the `include` glob matches no files. App projects (as opposed to library projects) often have no unit tests — their behaviour is covered by E2E tests. Without `passWithNoTests: true`, the `nx run-many --target=test` step fails the entire CI run even though there is nothing wrong.
+
+---
+
+## L021 — SonarCloud shows 0% coverage unless `reporter: ['lcov']` is set in Vitest coverage config
+
+**Date:** 2026-05-03
+**Phase:** Phase 6 / Phase 10 — SonarCloud integration
+**Rule:** Add `coverage: { provider: 'v8', reporter: ['lcov', 'text'] }` to every library's `vite.config.mts`. Without the `lcov` reporter, running `nx test --coverage` only produces terminal text output — no `lcov.info` files are written, so SonarCloud reads nothing and reports 0%.
+
+**Why:**
+SonarCloud's coverage ingestion reads LCOV format files at the paths configured in `sonar.javascript.lcov.reportPaths`. Vitest's `--coverage` CLI flag enables coverage collection but uses the `text` reporter by default (terminal only). Unless `reporter: ['lcov']` is explicitly set, no `lcov.info` file is ever written to disk.
+
+**Config to add to every `vite.config.mts`:**
+```typescript
+test: {
+  coverage: {
+    provider: 'v8',
+    reporter: ['lcov', 'text'],
+    reportsDirectory: '../../coverage/libs/<category>/<name>',
+  },
+}
+```
+
+**Status:** Tests exist and pass at 90%+ per library. This is a reporter config task tracked in Phase 10.
+
+---
+
+## L022 — CI failures cascade — each layer hides the next; fix methodically from the top
+
+**Date:** 2026-05-03
+**Phase:** Phase 6 — PR 13 CI
+**Rule:** When multiple CI checks fail simultaneously, fix one layer at a time starting with lint/build, then test, then native toolchain. Never attempt to guess what is behind a deeper failure until the shallower one is cleared — the next layer only becomes visible after the previous one is resolved.
+
+**Why:**
+PR 13 had 8 distinct failures across 4 CI jobs, none of which were visible simultaneously. Fixing missing `peerDependencies` revealed the missing ESLint constraint. Fixing that revealed the missing Capacitor install step. Fixing that revealed the version mismatch. Fixing that revealed the Java version. Each commit cleared one layer and exposed the next. Trying to fix them all speculatively without reading each error message would have introduced more confusion than it resolved.
